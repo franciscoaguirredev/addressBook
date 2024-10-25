@@ -77,3 +77,5 @@ To learn more about React Native, take a look at the following resources:
 - [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
 - [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
 - [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
+
+# Necesitamos una aplicación móvil que nos permita gestionar los contactos de nuestros empleados y clientes de manera rápida y sencilla. La idea es que los usuarios puedan agregar nuevos contactos con su información básica, como nombre, teléfono y correo electrónico, además de poder adjuntar una foto del contacto utilizando la cámara del teléfono o seleccionando una imagen de la galería. También sería ideal que pudieran editar y eliminar contactos cuando sea necesario. La aplicación debería funcionar tanto en Android como en iOS, y ser fácil de usar para todos los empleados, sin necesidad de conocimientos técnicos avanzados.
