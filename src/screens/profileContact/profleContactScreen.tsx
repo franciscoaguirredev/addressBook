@@ -1,4 +1,4 @@
-// ProfileScreen.tsx
+import {useNavigation} from '@react-navigation/native';
 import React from 'react';
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import Icon from 'react-native-vector-icons/EvilIcons';
@@ -6,6 +6,7 @@ import Icon from 'react-native-vector-icons/EvilIcons';
 export const ProfileScreen: React.FC<any> = ({route}) => {
   const {contact} = route.params;
   console.log('Profile Loaded');
+  const navigation = useNavigation<any>();
 
   return (
     <View style={styles.container}>
@@ -14,7 +15,9 @@ export const ProfileScreen: React.FC<any> = ({route}) => {
       <Text style={styles.text}>Email: {contact.email}</Text>
       <Text style={styles.text}>Rol: {contact.role}</Text>
       <View style={styles.actionsContainer}>
-        <TouchableOpacity style={styles.iconButton}>
+        <TouchableOpacity
+          style={styles.iconButton}
+          onPress={() => navigation.navigate('EditContact', {contact})}>
           <Icon name="pencil" size={24} color="black" />
           <Text style={styles.text}>Editar</Text>
         </TouchableOpacity>
