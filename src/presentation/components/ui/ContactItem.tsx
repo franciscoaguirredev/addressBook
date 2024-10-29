@@ -1,7 +1,7 @@
-import { Pressable, StyleSheet, Text, View } from 'react-native';
-import { colors } from '../../../config/theme/theme';
-import Icon from 'react-native-vector-icons/Ionicons';
-import { useNavigation } from '@react-navigation/native';
+import {Pressable, StyleSheet, Text, View} from 'react-native';
+import {colors} from '../../../config/theme/theme';
+import Icon from 'react-native-vector-icons/MaterialIcons';
+import {useNavigation} from '@react-navigation/native';
 
 interface Props {
   name: string;
@@ -21,11 +21,12 @@ export const ContactItem = ({
   isLast = false,
 }: Props) => {
   const navigation = useNavigation<any>();
-  
-  const contact = { name, telephone, email, role }; // Crear un objeto contacto
+
+  const contact = {name, telephone, email, role}; // Crear un objeto contacto
 
   return (
-    <Pressable onPress={() => navigation.navigate('ProfileContactScreen', { contact })}>
+    <Pressable
+      onPress={() => navigation.navigate('ProfileContactScreen', {contact})}>
       <View
         style={{
           ...styles.container,
@@ -42,16 +43,16 @@ export const ContactItem = ({
           }),
         }}>
         <Icon
-          name="sparkles-outline"
+          name="account-circle"
           size={25}
-          style={{ marginRight: 10 }}
+          style={{marginRight: 10}}
           color={colors.primary}
         />
-        <Text style={{ color: colors.text }}>{name}</Text>
+        <Text style={{color: colors.text}}>{name}</Text>
         <Icon
-          name="arrow-forward-circle-sharp"
+          name="arrow-forward-ios"
           size={25}
-          style={{ marginLeft: 'auto', color: colors.primary }}
+          style={{marginLeft: 'auto', color: colors.primary}}
         />
       </View>
     </Pressable>
@@ -66,4 +67,3 @@ const styles = StyleSheet.create({
     paddingVertical: 5,
   },
 });
-
