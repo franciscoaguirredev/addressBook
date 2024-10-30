@@ -3,6 +3,7 @@ import {TextInput} from 'react-native-gesture-handler';
 
 export const EditScreen: React.FC<any> = ({route}) => {
   const {contact} = route.params;
+
   return (
     <View>
       <Text>Name:</Text>
