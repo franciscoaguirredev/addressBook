@@ -632,14 +632,14 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   cancelButton: {
-    backgroundColor: colors.secondary,
+    backgroundColor: 'blue',
     borderRadius: 8,
     padding: 15,
     alignItems: 'center',
     marginTop: 10,
   },
   buttonText: {
-    color: colors.buttonText,
+    color: 'blue',
     fontSize: 16,
   },
 });
