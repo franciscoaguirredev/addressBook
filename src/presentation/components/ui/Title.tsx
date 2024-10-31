@@ -13,15 +13,15 @@ export const Title = ({text, safe = false, white = false}: Props) => {
 
   return (
     <View>
-          <Text
-      style={{
-        ...globalStyles.title,
-        marginTop: safe ? top : 0,
-        marginBottom: 10,
-        color: white ? 'white' : colors.text,
-      }}>
-      {text}
-    </Text>
+      <Text
+        style={{
+          ...globalStyles.title,
+          marginTop: safe ? top : 0,
+          marginBottom: 10,
+          color: 'white',
+        }}>
+        {text}
+      </Text>
     </View>
   );
 };

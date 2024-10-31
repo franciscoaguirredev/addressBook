@@ -593,8 +593,10 @@ const styles = StyleSheet.create({
     backgroundColor: colors.background,
   },
   photoContainer: {
+    backgroundColor: 'white',
     alignItems: 'center',
     marginBottom: 15,
+    borderRadius: 50,
   },
   photo: {
     width: 100,
@@ -625,21 +627,21 @@ const styles = StyleSheet.create({
     color: colors.text,
   },
   saveButton: {
-    backgroundColor: colors.primary,
+    backgroundColor: '#bdbec3',
     borderRadius: 8,
     padding: 15,
     alignItems: 'center',
     marginTop: 20,
   },
   cancelButton: {
-    backgroundColor: 'blue',
+    backgroundColor: '#bdbec3',
     borderRadius: 8,
     padding: 15,
     alignItems: 'center',
     marginTop: 10,
   },
   buttonText: {
-    color: 'blue',
+    color: colors.primary,
     fontSize: 16,
   },
 });

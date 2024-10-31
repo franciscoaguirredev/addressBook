@@ -8,9 +8,9 @@ export interface ThemeColors {
   buttonTextColor: string;
 }
 export const colors: ThemeColors = {
-  primary: '#585606',
+  primary: '#000417',
   text: 'black',
-  background: '#F3F2FT',
+  background: '#000417',
   cardBackground: 'white',
   buttonTextColor: 'white',
 };
