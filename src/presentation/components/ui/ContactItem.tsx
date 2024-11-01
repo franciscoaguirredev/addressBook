@@ -21,8 +21,7 @@ export const ContactItem = ({
   isLast = false,
 }: Props) => {
   const navigation = useNavigation<any>();
-
-  const contact = {name, telephone, email, role}; // Crear un objeto contacto
+  const contact = {name, telephone, email, role};
 
   return (
     <Pressable

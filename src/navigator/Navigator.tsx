@@ -1,6 +1,6 @@
 import {createStackNavigator} from '@react-navigation/stack';
 import {HomeScreen} from '../screens/home/homeScreen';
-import {ProfileScreen} from '../screens/profileContact/profleContactScreen';
+import {ProfileScreen} from '../screens/profileContact/profileContactScreen';
 import {EditScreen} from '../screens/editContact/editScreen';
 import {AddContactScreen} from '../screens/addContact/addContactScreen';
 
