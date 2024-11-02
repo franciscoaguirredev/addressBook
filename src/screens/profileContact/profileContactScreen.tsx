@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/EvilIcons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import MapView, {PROVIDER_GOOGLE} from 'react-native-maps';
 
 export const ProfileScreen: React.FC<any> = ({route}) => {
   const {contact} = route.params;
@@ -89,6 +90,17 @@ export const ProfileScreen: React.FC<any> = ({route}) => {
           <Text style={styles.text}>Ubicación</Text>
         </TouchableOpacity>
       </View>
+      <View style={styles.containerMap}>
+        <MapView
+          // provider={PROVIDER_GOOGLE}
+          style={styles.map}
+          region={{
+            latitude: 37.78825,
+            longitude: -122.4324,
+            latitudeDelta: 0.015,
+            longitudeDelta: 0.0121,
+          }}></MapView>
+      </View>
     </View>
   );
 };
@@ -125,5 +137,17 @@ const styles = StyleSheet.create({
   },
   text: {
     color: 'black',
+  },
+  containerMap: {
+    height: 400,
+    width: 400,
+    // justifyContent: 'flex-start',
+    // alignItems: 'center',
+    // borderColor: '#e0122e',
+    // borderStyle: 'solid',
+    // borderRightWidth: 1,
+  },
+  map: {
+    ...StyleSheet.absoluteFillObject,
   },
 });
