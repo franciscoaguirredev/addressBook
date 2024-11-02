@@ -1,4 +1,4 @@
-import {Pressable, StyleSheet, Text, View} from 'react-native';
+import {Pressable, StyleSheet, Text, View, Image} from 'react-native';
 import {colors} from '../../../config/theme/theme';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {useNavigation} from '@react-navigation/native';
@@ -8,6 +8,7 @@ interface Props {
   telephone: string;
   email: string;
   role: string;
+  image?: string;
   isFirst?: boolean;
   isLast?: boolean;
 }
@@ -17,11 +18,12 @@ export const ContactItem = ({
   telephone,
   email,
   role,
+  image,
   isFirst = false,
   isLast = false,
 }: Props) => {
   const navigation = useNavigation<any>();
-  const contact = {name, telephone, email, role};
+  const contact = {name, telephone, email, role, image};
 
   return (
     <Pressable
@@ -41,12 +43,20 @@ export const ContactItem = ({
             paddingBottom: 10,
           }),
         }}>
-        <Icon
-          name="account-circle"
-          size={25}
-          style={{marginRight: 10}}
-          color={colors.primary}
-        />
+        {image ? (
+          <Image
+            source={{uri: image}}
+            style={styles.thumbnail}
+            resizeMode="cover"
+          />
+        ) : (
+          <Icon
+            name="account-circle"
+            size={25}
+            style={{marginRight: 10}}
+            color={colors.primary}
+          />
+        )}
         <Text style={{color: colors.text}}>{name}</Text>
         <Icon
           name="arrow-forward-ios"
@@ -64,5 +74,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 10,
     paddingVertical: 5,
+  },
+  thumbnail: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    marginRight: 10,
   },
 });

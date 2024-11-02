@@ -82,6 +82,7 @@ export const HomeScreen = () => {
               telephone={contact.telephone}
               email={contact.email}
               role={contact.role}
+              image={contact.image}
               isFirst={index === 0}
               isLast={index === contacts.length - 1}
             />

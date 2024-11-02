@@ -1,6 +1,13 @@
 import {useNavigation, useRoute} from '@react-navigation/native';
 import React, {useEffect, useState} from 'react';
-import {View, Text, StyleSheet, TouchableOpacity, Alert} from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Alert,
+  Image,
+} from 'react-native';
 import Icon from 'react-native-vector-icons/EvilIcons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -10,7 +17,6 @@ export const ProfileScreen: React.FC<any> = ({route}) => {
   const [contactData, setContactData] = useState(contact);
 
   useEffect(() => {
-    // Función para obtener el contacto actualizado
     const loadContactData = async () => {
       const updatedContact = await AsyncStorage.getItem(
         `contact_${contact.telephone}`,
@@ -20,11 +26,26 @@ export const ProfileScreen: React.FC<any> = ({route}) => {
       }
     };
 
-    // Actualizar el contacto cuando se vuelve de la pantalla de edición
     const unsubscribe = navigation.addListener('focus', loadContactData);
 
     return unsubscribe;
   }, [navigation, contact.telephone]);
+
+  const confirmDelete = () => {
+    Alert.alert(
+      'Confirmar eliminación',
+      '¿Está seguro de que desea eliminar este contacto?',
+      [
+        {text: 'Cancelar', style: 'cancel'},
+        {
+          text: 'Eliminar',
+          style: 'destructive',
+          onPress: handleDelete,
+        },
+      ],
+      {cancelable: true},
+    );
+  };
 
   const handleDelete = async () => {
     try {
@@ -41,6 +62,11 @@ export const ProfileScreen: React.FC<any> = ({route}) => {
 
   return (
     <View style={styles.container}>
+      {contactData.photo ? (
+        <Image source={{uri: contactData.photo}} style={styles.photo} />
+      ) : (
+        <Text style={styles.photoPlaceholder}>Sin foto</Text>
+      )}
       <Text style={styles.title}>{contactData.name}</Text>
       <Text style={styles.text}>Teléfono: {contactData.telephone}</Text>
       <Text style={styles.text}>Email: {contactData.email}</Text>
@@ -54,7 +80,7 @@ export const ProfileScreen: React.FC<any> = ({route}) => {
           <Icon name="pencil" size={24} color="black" />
           <Text style={styles.text}>Editar</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.iconButton} onPress={handleDelete}>
+        <TouchableOpacity style={styles.iconButton} onPress={confirmDelete}>
           <Icon name="trash" size={24} color="black" />
           <Text style={styles.text}>Eliminar</Text>
         </TouchableOpacity>
@@ -73,6 +99,17 @@ const styles = StyleSheet.create({
     padding: 20,
     alignItems: 'center',
   },
+  photo: {
+    width: 100,
+    height: 100,
+    borderRadius: 50,
+    marginBottom: 10,
+  },
+  photoPlaceholder: {
+    fontSize: 16,
+    color: 'grey',
+    marginBottom: 10,
+  },
   title: {
     fontSize: 24,
     fontWeight: 'bold',
@@ -82,10 +119,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     width: '60%',
-  },
-  iconText: {
-    marginTop: 5,
-    fontSize: 14,
   },
   iconButton: {
     alignItems: 'center',
