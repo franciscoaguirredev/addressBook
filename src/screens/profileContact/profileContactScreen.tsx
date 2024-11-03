@@ -10,20 +10,30 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/EvilIcons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import MapView, {PROVIDER_GOOGLE} from 'react-native-maps';
+import MapView, {Marker} from 'react-native-maps';
 
 export const ProfileScreen: React.FC<any> = ({route}) => {
   const {contact} = route.params;
   const navigation = useNavigation<any>();
   const [contactData, setContactData] = useState(contact);
+  const [location, setLocation] = useState<{ latitude: number; longitude: number } | null>(null);
+  console.log(location)
 
   useEffect(() => {
     const loadContactData = async () => {
-      const updatedContact = await AsyncStorage.getItem(
-        `contact_${contact.telephone}`,
-      );
+      const updatedContact = await AsyncStorage.getItem(`contact_${contact.telephone}`);
       if (updatedContact) {
-        setContactData(JSON.parse(updatedContact));
+        const parsedContact = JSON.parse(updatedContact);
+        setContactData(parsedContact);
+
+        // Recuperar y parsear las coordenadas de ubicación
+        if (parsedContact.location) {
+          const locationData = parsedContact.location;
+          setLocation({
+            latitude: locationData.latitude,
+            longitude: locationData.longitude,
+          });
+        }
       }
     };
 
@@ -51,10 +61,7 @@ export const ProfileScreen: React.FC<any> = ({route}) => {
   const handleDelete = async () => {
     try {
       await AsyncStorage.removeItem(`contact_${contact.telephone}`);
-      Alert.alert(
-        'Contacto eliminado',
-        'El contacto ha sido eliminado correctamente.',
-      );
+      Alert.alert('Contacto eliminado', 'El contacto ha sido eliminado correctamente.');
       navigation.goBack();
     } catch (error) {
       Alert.alert('Error', 'No se pudo eliminar el contacto.');
@@ -76,7 +83,7 @@ export const ProfileScreen: React.FC<any> = ({route}) => {
         <TouchableOpacity
           style={styles.iconButton}
           onPress={() =>
-            navigation.navigate('EditContact', {contact: contactData})
+            navigation.navigate('EditContactScreen', {contact: contactData})
           }>
           <Icon name="pencil" size={24} color="black" />
           <Text style={styles.text}>Editar</Text>
@@ -85,22 +92,28 @@ export const ProfileScreen: React.FC<any> = ({route}) => {
           <Icon name="trash" size={24} color="black" />
           <Text style={styles.text}>Eliminar</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.iconButton}>
-          <Icon name="location" size={24} color="black" />
-          <Text style={styles.text}>Ubicación</Text>
-        </TouchableOpacity>
       </View>
-      <View style={styles.containerMap}>
-        <MapView
-          // provider={PROVIDER_GOOGLE}
-          style={styles.map}
-          region={{
-            latitude: 37.78825,
-            longitude: -122.4324,
-            latitudeDelta: 0.015,
-            longitudeDelta: 0.0121,
-          }}></MapView>
-      </View>
+
+      {/* Map View */}
+      {location && (
+        <View style={styles.containerMap}>
+          <MapView
+            style={styles.map}
+            region={{
+              latitude: location.latitude,
+              longitude: location.longitude,
+              latitudeDelta: 0.015,
+              longitudeDelta: 0.0121,
+            }}
+          >
+            <Marker
+              coordinate={location}
+              title={contactData.name}
+              description={`Ubicación de ${contactData.name}`}
+            />
+          </MapView>
+        </View>
+      )}
     </View>
   );
 };
@@ -139,13 +152,9 @@ const styles = StyleSheet.create({
     color: 'black',
   },
   containerMap: {
-    height: 400,
-    width: 400,
-    // justifyContent: 'flex-start',
-    // alignItems: 'center',
-    // borderColor: '#e0122e',
-    // borderStyle: 'solid',
-    // borderRightWidth: 1,
+    height: 300,
+    width: '100%',
+    marginTop: 20,
   },
   map: {
     ...StyleSheet.absoluteFillObject,
