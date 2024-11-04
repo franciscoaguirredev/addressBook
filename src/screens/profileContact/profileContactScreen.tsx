@@ -1,4 +1,4 @@
-import {useNavigation, useRoute} from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 import React, {useEffect, useState} from 'react';
 import {
   View,
@@ -8,16 +8,18 @@ import {
   Alert,
   Image,
 } from 'react-native';
-import Icon from 'react-native-vector-icons/EvilIcons';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import MapView, {Marker} from 'react-native-maps';
+import { getWeather } from '../../config/utils/apiWeather';
+import { colors } from '../../config/theme/theme';
 
 export const ProfileScreen: React.FC<any> = ({route}) => {
   const {contact} = route.params;
   const navigation = useNavigation<any>();
   const [contactData, setContactData] = useState(contact);
   const [location, setLocation] = useState<{ latitude: number; longitude: number } | null>(null);
-  console.log(location)
+  const [weatherData, setWeatherData] = useState<{temperature: number; weatherDescription: string; iconURL: string} | null>(null);
 
   useEffect(() => {
     const loadContactData = async () => {
@@ -41,6 +43,20 @@ export const ProfileScreen: React.FC<any> = ({route}) => {
 
     return unsubscribe;
   }, [navigation, contact.telephone]);
+
+  useEffect(() => {
+    // Obtener el clima si existe una ubicación
+    const fetchWeather = async () => {
+      if (location) {
+        const weather = await getWeather(location);
+        if (weather) {
+          setWeatherData(weather);
+        }
+      }
+    };
+
+    fetchWeather();
+  }, [location]);
 
   const confirmDelete = () => {
     Alert.alert(
@@ -73,27 +89,28 @@ export const ProfileScreen: React.FC<any> = ({route}) => {
       {contactData.photo ? (
         <Image source={{uri: contactData.photo}} style={styles.photo} />
       ) : (
-        <Text style={styles.photoPlaceholder}>Sin foto</Text>
+        // <Text style={styles.photoPlaceholder}>Sin foto</Text>
+        <Icon
+        name="account-circle"
+        size={150}
+        style={{marginRight: 10}}
+        color={colors.primary}
+      />
       )}
       <Text style={styles.title}>{contactData.name}</Text>
       <Text style={styles.text}>Teléfono: {contactData.telephone}</Text>
       <Text style={styles.text}>Email: {contactData.email}</Text>
       <Text style={styles.text}>Rol: {contactData.role}</Text>
-      <View style={styles.actionsContainer}>
-        <TouchableOpacity
-          style={styles.iconButton}
-          onPress={() =>
-            navigation.navigate('EditContactScreen', {contact: contactData})
-          }>
-          <Icon name="pencil" size={24} color="black" />
-          <Text style={styles.text}>Editar</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.iconButton} onPress={confirmDelete}>
-          <Icon name="trash" size={24} color="black" />
-          <Text style={styles.text}>Eliminar</Text>
-        </TouchableOpacity>
-      </View>
-
+      
+      {/* Mostrar datos del clima */}
+      {weatherData && (
+        <View style={styles.weatherContainer}>
+          <Image source={{uri: weatherData.iconURL}} style={styles.weatherIcon} />
+          <Text style={styles.weatherText}>{weatherData.temperature.toFixed(1)}°C</Text>
+          <Text style={styles.weatherDescription}>{weatherData.weatherDescription}</Text>
+        </View>
+      )}
+      
       {/* Map View */}
       {location && (
         <View style={styles.containerMap}>
@@ -114,6 +131,20 @@ export const ProfileScreen: React.FC<any> = ({route}) => {
           </MapView>
         </View>
       )}
+      <View style={styles.actionsContainer}>
+        <TouchableOpacity
+          style={styles.iconButton}
+          onPress={() =>
+            navigation.navigate('EditContactScreen', {contact: contactData})
+          }>
+          <Icon name="edit" size={24} color="black" />
+          <Text style={styles.text}>Editar</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.iconButton} onPress={confirmDelete}>
+          <Icon name="delete" size={24} color="black" />
+          <Text style={styles.text}>Eliminar</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
@@ -123,6 +154,7 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 20,
     alignItems: 'center',
+       backgroundColor: 'yellow'
   },
   photo: {
     width: 100,
@@ -144,12 +176,33 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     width: '60%',
+    marginTop: 40
   },
   iconButton: {
     alignItems: 'center',
   },
   text: {
     color: 'black',
+  },
+  weatherContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginVertical: 10,
+  },
+  weatherIcon: {
+    width: 50,
+    height: 50,
+    marginRight: 10,
+  },
+  weatherText: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: 'black',
+  },
+  weatherDescription: {
+    fontSize: 16,
+    color: 'grey',
+    marginLeft: 5,
   },
   containerMap: {
     height: 300,
@@ -160,3 +213,5 @@ const styles = StyleSheet.create({
     ...StyleSheet.absoluteFillObject,
   },
 });
+
+
