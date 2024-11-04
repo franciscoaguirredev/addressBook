@@ -1,10 +1,11 @@
+import { OPENWEATHER_KEY } from '@env';
+
 export async function getWeather (location: { latitude:number; longitude: number }){
     
     const {latitude, longitude} = location
 
-    const apiKey = '3d0739b99f707a3c0660692b337f64ed'
     try {
-        const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${apiKey}&units=metric`)
+        const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${OPENWEATHER_KEY}&units=metric`)
         if (!response.ok) {
             throw new Error('Network response was not ok ' + response.statusText);
         }
