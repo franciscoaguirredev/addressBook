@@ -76,5 +76,5 @@ yarn-error.log
 #env
 .env
 
-#Android- GoogleMapsAPIKey
+#Android
 android/app/src/main/AndroidManifest.xml
