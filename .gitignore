@@ -77,4 +77,4 @@ yarn-error.log
 .env
 
 #Android
-android/app/src/main/AndroidManifest.xml
+#android/app/src/main/AndroidManifest.xml
