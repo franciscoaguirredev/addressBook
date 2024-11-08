@@ -81,12 +81,15 @@ export const EditScreen: React.FC<any> = ({route}) => {
           <View style={styles.modalBackground}>
             <View style={styles.modalContainer}>
               <TouchableOpacity onPress={handleOpenCamera} style={styles.modalButton}>
-                <Text style={styles.modalButtonText}>Tomar Foto</Text>
+                <Icon name="photo-camera" size={20} color={colors.primary} style={styles.modalIcon} />
+                <Text style={styles.modalButtonText}>Cámara</Text>
               </TouchableOpacity>
               <TouchableOpacity onPress={handleOpenGallery} style={styles.modalButton}>
-                <Text style={styles.modalButtonText}>Elegir de Galería</Text>
+                <Icon name="collections" size={20} color={colors.primary} style={styles.modalIcon} />
+                <Text style={styles.modalButtonText}>Galería</Text>
               </TouchableOpacity>
               <TouchableOpacity onPress={() => setIsModalVisible(false)} style={styles.modalButton}>
+                <Icon name="close" size={20} color={colors.primary} style={styles.modalIcon} />
                 <Text style={styles.modalButtonText}>Cancelar</Text>
               </TouchableOpacity>
             </View>
@@ -280,13 +283,18 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   modalButton: {
-    padding: 10,
+    flexDirection: 'row',
     alignItems: 'center',
+    padding: 10,
     width: '100%',
+  },
+  modalIcon: {
+    marginRight: 10,
   },
   modalButtonText: {
     color: colors.primary,
     fontSize: 16,
   },
 });
+
 
