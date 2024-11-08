@@ -81,7 +81,7 @@ export const HomeScreen = () => {
     <View style={globalStyles.mainContainer}>
       <View style={globalStyles.globalMargin}>
         <ScrollView>
-          <Title text="Contactos" safe />
+          <Title text="My Contacts" safe />
           <View>
             <View style={styles.searchContainer}>
               <Icon
@@ -91,7 +91,7 @@ export const HomeScreen = () => {
                 style={styles.searchIcon}
               />
               <TextInput
-                placeholder="Buscar contacto"
+                placeholder="Search Contact"
                 placeholderTextColor={colors.text}
                 style={styles.searchInput}
                 value={searchText}
@@ -102,7 +102,7 @@ export const HomeScreen = () => {
               style={styles.addButton}
               onPress={() => navigation.navigate('AddContactScreen')}>
               <Icon name="add" size={20} color={colors.primary} />
-              <Text style={styles.addButtonText}>Añadir contacto</Text>
+              <Text style={styles.addButtonText}>Add contact</Text>
             </Pressable>
           </View>
           {Object.keys(groupedContacts).sort().map(letter => (

@@ -59,12 +59,12 @@ export const EditScreen: React.FC<any> = ({route}) => {
       await AsyncStorage.setItem(contactId, JSON.stringify(updatedContact));
 
       Alert.alert(
-        'Contacto guardado',
-        'El contacto ha sido actualizado correctamente.',
+        'Saved contact',
+        'The contact has been successfully updated.',
       );
       navigation.goBack();
     } catch (error) {
-      Alert.alert('Error', 'Hubo un problema al guardar el contacto.');
+      Alert.alert('Error', 'There was a problem saving the contact.');
       console.error(error);
     }
   };
@@ -72,7 +72,6 @@ export const EditScreen: React.FC<any> = ({route}) => {
   return (
     <View style={styles.container}>
       <ScrollView>
-        {/* Modal para elegir fuente de la foto */}
         <Modal
           transparent={true}
           visible={isModalVisible}
@@ -82,21 +81,20 @@ export const EditScreen: React.FC<any> = ({route}) => {
             <View style={styles.modalContainer}>
               <TouchableOpacity onPress={handleOpenCamera} style={styles.modalButton}>
                 <Icon name="photo-camera" size={20} color={colors.primary} style={styles.modalIcon} />
-                <Text style={styles.modalButtonText}>Cámara</Text>
+                <Text style={styles.modalButtonText}>Camera</Text>
               </TouchableOpacity>
               <TouchableOpacity onPress={handleOpenGallery} style={styles.modalButton}>
                 <Icon name="collections" size={20} color={colors.primary} style={styles.modalIcon} />
-                <Text style={styles.modalButtonText}>Galería</Text>
+                <Text style={styles.modalButtonText}>Gallery</Text>
               </TouchableOpacity>
               <TouchableOpacity onPress={() => setIsModalVisible(false)} style={styles.modalButton}>
                 <Icon name="close" size={20} color={colors.primary} style={styles.modalIcon} />
-                <Text style={styles.modalButtonText}>Cancelar</Text>
+                <Text style={styles.modalButtonText}>Cancel</Text>
               </TouchableOpacity>
             </View>
           </View>
         </Modal>
 
-        {/* Foto */}
         <TouchableOpacity
           style={styles.photoContainer}
           onPress={() => setIsModalVisible(true)}>
@@ -105,10 +103,9 @@ export const EditScreen: React.FC<any> = ({route}) => {
           ) : (
             <Icon name="photo-camera" size={30} color={colors.primary} />
           )}
-          <Text style={styles.photoText}>Añadir foto</Text>
+          <Text style={styles.photoText}>Select photo</Text>
         </TouchableOpacity>
 
-        {/* Nombre */}
         <View style={styles.inputContainer}>
           <Icon
             name="person"
@@ -117,7 +114,7 @@ export const EditScreen: React.FC<any> = ({route}) => {
             style={styles.icon}
           />
           <TextInput
-            placeholder="Nombre"
+            placeholder="Name"
             placeholderTextColor={colors.text}
             onChangeText={setName}
             value={name}
@@ -125,7 +122,6 @@ export const EditScreen: React.FC<any> = ({route}) => {
           />
         </View>
 
-        {/* Teléfono */}
         <View style={styles.inputContainer}>
           <Icon
             name="phone"
@@ -134,7 +130,7 @@ export const EditScreen: React.FC<any> = ({route}) => {
             style={styles.icon}
           />
           <TextInput
-            placeholder="Teléfono"
+            placeholder="Telephone"
             placeholderTextColor={colors.text}
             onChangeText={setTelephone}
             keyboardType="phone-pad"
@@ -143,7 +139,6 @@ export const EditScreen: React.FC<any> = ({route}) => {
           />
         </View>
 
-        {/* Email */}
         <View style={styles.inputContainer}>
           <Icon
             name="email"
@@ -161,7 +156,6 @@ export const EditScreen: React.FC<any> = ({route}) => {
           />
         </View>
 
-        {/* Rol */}
         <View style={styles.inputContainer}>
           <Icon
             name="work"
@@ -173,14 +167,13 @@ export const EditScreen: React.FC<any> = ({route}) => {
             selectedValue={role}
             onValueChange={itemValue => setRole(itemValue)}
             style={styles.picker}>
-            <Picker.Item label="Cliente" value="Cliente" />
-            <Picker.Item label="Empleado" value="Empleado" />
+            <Picker.Item label="Client" value="Client" />
+            <Picker.Item label="Employee" value="Employee" />
           </Picker>
         </View>
 
-        {/* Ubicación */}
         <View style={styles.mapContainer}>
-          <Text style={styles.mapLabel}>Ubicación</Text>
+          <Text style={styles.mapLabel}>location</Text>
           <GoogleMapsScreen
             onLocationSelected={handleLocationSelect}
             initialLocation={location ? location : null}
@@ -188,16 +181,14 @@ export const EditScreen: React.FC<any> = ({route}) => {
           />
         </View>
 
-        {/* Botón Guardar */}
         <TouchableOpacity style={styles.saveButton} onPress={saveContact}>
-          <Text style={styles.buttonText}>Guardar</Text>
+          <Text style={styles.buttonText}>Save</Text>
         </TouchableOpacity>
 
-        {/* Botón Cancelar */}
         <TouchableOpacity
           style={styles.cancelButton}
           onPress={() => navigation.goBack()}>
-          <Text style={styles.buttonText}>Cancelar</Text>
+          <Text style={styles.buttonText}>Cancel</Text>
         </TouchableOpacity>
       </ScrollView>
     </View>
@@ -248,7 +239,7 @@ const styles = StyleSheet.create({
     marginVertical: 15,
   },
   mapLabel: {
-    color: colors.primary,
+    color: 'yellow',
     marginBottom: 5,
   },
   saveButton: {

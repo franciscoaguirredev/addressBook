@@ -45,7 +45,6 @@ export const ProfileScreen: React.FC<any> = ({route}) => {
   }, [navigation, contact.telephone]);
 
   useEffect(() => {
-    // Obtener el clima si existe una ubicación
     const fetchWeather = async () => {
       if (location) {
         const weather = await getWeather(location);
@@ -60,12 +59,12 @@ export const ProfileScreen: React.FC<any> = ({route}) => {
 
   const confirmDelete = () => {
     Alert.alert(
-      'Confirmar eliminación',
-      '¿Está seguro de que desea eliminar este contacto?',
+      'Confirm elimination',
+      '¿Are you sure you want to delete this contact??',
       [
-        {text: 'Cancelar', style: 'cancel'},
+        {text: 'Cancel', style: 'cancel'},
         {
-          text: 'Eliminar',
+          text: 'Delete',
           style: 'destructive',
           onPress: handleDelete,
         },
@@ -77,10 +76,10 @@ export const ProfileScreen: React.FC<any> = ({route}) => {
   const handleDelete = async () => {
     try {
       await AsyncStorage.removeItem(`contact_${contact.telephone}`);
-      Alert.alert('Contacto eliminado', 'El contacto ha sido eliminado correctamente.');
+      Alert.alert('Contact deleted', 'The contact has been successfully deleted.');
       navigation.goBack();
     } catch (error) {
-      Alert.alert('Error', 'No se pudo eliminar el contacto.');
+      Alert.alert('Error', 'The contact could not be deleted.');
     }
   };
 
@@ -89,7 +88,6 @@ export const ProfileScreen: React.FC<any> = ({route}) => {
       {contactData.photo ? (
         <Image source={{uri: contactData.photo}} style={styles.photo} />
       ) : (
-        // <Text style={styles.photoPlaceholder}>Sin foto</Text>
         <Icon
         name="account-circle"
         size={150}
@@ -98,11 +96,10 @@ export const ProfileScreen: React.FC<any> = ({route}) => {
       />
       )}
       <Text style={styles.title}>{contactData.name}</Text>
-      <Text style={styles.text}>Teléfono: {contactData.telephone}</Text>
+      <Text style={styles.text}>Telephone: {contactData.telephone}</Text>
       <Text style={styles.text}>Email: {contactData.email}</Text>
-      <Text style={styles.text}>Rol: {contactData.role}</Text>
+      <Text style={styles.text}>Role: {contactData.role}</Text>
       
-      {/* Mostrar datos del clima */}
       {weatherData && (
         <View style={styles.weatherContainer}>
           <Image source={{uri: weatherData.iconURL}} style={styles.weatherIcon} />
@@ -111,7 +108,6 @@ export const ProfileScreen: React.FC<any> = ({route}) => {
         </View>
       )}
       
-      {/* Map View */}
       {location && (
         <View style={styles.containerMap}>
           <MapView
@@ -126,7 +122,7 @@ export const ProfileScreen: React.FC<any> = ({route}) => {
             <Marker
               coordinate={location}
               title={contactData.name}
-              description={`Ubicación de ${contactData.name}`}
+              description={`Location of ${contactData.name}`}
             />
           </MapView>
         </View>
@@ -138,11 +134,11 @@ export const ProfileScreen: React.FC<any> = ({route}) => {
             navigation.navigate('EditContactScreen', {contact: contactData})
           }>
           <Icon name="edit" size={24} color="black" />
-          <Text style={styles.text}>Editar</Text>
+          <Text style={styles.text}>Edit</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.iconButton} onPress={confirmDelete}>
           <Icon name="delete" size={24} color="black" />
-          <Text style={styles.text}>Eliminar</Text>
+          <Text style={styles.text}>Delete</Text>
         </TouchableOpacity>
       </View>
     </View>

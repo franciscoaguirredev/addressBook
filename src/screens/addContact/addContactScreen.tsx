@@ -76,17 +76,17 @@ export const AddContactScreen = () => {
         >
           <View style={styles.modalBackground}>
             <View style={styles.modalContainer}>
-              <Text style={styles.modalTitle}>Seleccionar Foto</Text>
+              <Text style={styles.modalTitle}>Select photo</Text>
               <TouchableOpacity style={styles.modalOption} onPress={handleOpenCamera}>
                 <Icon name="photo-camera" size={24} color={colors.primary} />
-                <Text style={styles.modalOptionText}>Cámara</Text>
+                <Text style={styles.modalOptionText}>Camera</Text>
               </TouchableOpacity>
               <TouchableOpacity style={styles.modalOption} onPress={handleOpenGallery}>
                 <Icon name="photo-library" size={24} color={colors.primary} />
-                <Text style={styles.modalOptionText}>Galería</Text>
+                <Text style={styles.modalOptionText}>Gallery</Text>
               </TouchableOpacity>
               <TouchableOpacity style={styles.modalCancel} onPress={closeModal}>
-                <Text style={styles.modalCancelText}>Cancelar</Text>
+                <Text style={styles.modalCancelText}>Cancel</Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -98,13 +98,13 @@ export const AddContactScreen = () => {
           ) : (
             <Icon name="photo-camera" size={30} color={colors.primary} />
           )}
-          <Text style={styles.photoText}>Añadir foto</Text>
+          <Text style={styles.photoText}>Add photo</Text>
         </TouchableOpacity>
 
         <View style={styles.inputContainer}>
           <Icon name="person" size={20} color={colors.primary} style={styles.icon} />
           <TextInput
-            placeholder="Nombre"
+            placeholder="Name"
             placeholderTextColor={colors.text}
             value={name}
             onChangeText={setName}
@@ -115,7 +115,7 @@ export const AddContactScreen = () => {
         <View style={styles.inputContainer}>
           <Icon name="phone" size={20} color={colors.primary} style={styles.icon} />
           <TextInput
-            placeholder="Teléfono"
+            placeholder="Telephone"
             placeholderTextColor={colors.text}
             value={telephone}
             onChangeText={setTelephone}
@@ -142,19 +142,19 @@ export const AddContactScreen = () => {
             selectedValue={role}
             onValueChange={itemValue => setRole(itemValue)}
             style={styles.picker}>
-            <Picker.Item label="Cliente" value="Cliente" />
-            <Picker.Item label="Empleado" value="Empleado" />
+            <Picker.Item label="Client" value="Client" />
+            <Picker.Item label="Employee" value="Employee" />
           </Picker>
         </View>
 
         <GoogleMapsScreen onLocationSelected={handleLocationSelected} />
 
         <TouchableOpacity style={styles.saveButton} onPress={saveContact}>
-          <Text style={styles.buttonText}>Guardar</Text>
+          <Text style={styles.buttonText}>Save</Text>
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.cancelButton} onPress={() => navigation.goBack()}>
-          <Text style={styles.buttonText}>Cancelar</Text>
+          <Text style={styles.buttonText}>Cancel</Text>
         </TouchableOpacity>
       </ScrollView>
     </View>
