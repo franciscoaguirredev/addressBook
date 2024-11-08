@@ -257,3 +257,4 @@ const styles = StyleSheet.create({
     color: colors.text,
   },
 });
+// hasta aqui funciona todo bien pero se esta tomando el telefono como ID
