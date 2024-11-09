@@ -27,7 +27,6 @@ export const ContactItem = ({
 }: Props) => {
   const navigation = useNavigation<any>();
   const contact = {id,name, telephone, email, role, image};
-  // console.log(`DESDE CONTACTiTEM: ${contact.id}`)
 
   return (
     <Pressable
