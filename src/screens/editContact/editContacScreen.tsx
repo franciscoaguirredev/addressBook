@@ -125,22 +125,24 @@ export const EditScreen: React.FC<any> = ({route}) => {
           </View>
         </Modal>
 
-        <TouchableOpacity
+        <TouchableOpacity 
           style={styles.photoContainer}
           onPress={() => setIsModalVisible(true)}>
           {photo ? (
             <Image source={{uri: photo}} style={styles.photo} />
           ) : (
-            <Icon name="photo-camera" size={30} color={colors.primary} />
+            <View style={styles.selectPhoto}>
+            <Icon name="photo-camera" size={30} color={colors.iconColor} />
+            <Text style={styles.photoText}>Add photo</Text>
+          </View>
           )}
-          <Text style={styles.photoText}>Select photo</Text>
         </TouchableOpacity>
 
         <View style={styles.inputContainer}>
           <Icon
             name="person"
             size={20}
-            color={colors.primary}
+            color={colors.iconColor}
             style={styles.icon}
           />
           <TextInput
@@ -156,7 +158,7 @@ export const EditScreen: React.FC<any> = ({route}) => {
           <Icon
             name="phone"
             size={20}
-            color={colors.primary}
+            color={colors.iconColor}
             style={styles.icon}
           />
           <TextInput
@@ -173,7 +175,7 @@ export const EditScreen: React.FC<any> = ({route}) => {
           <Icon
             name="email"
             size={20}
-            color={colors.primary}
+            color={colors.iconColor}
             style={styles.icon}
           />
           <TextInput
@@ -190,7 +192,7 @@ export const EditScreen: React.FC<any> = ({route}) => {
           <Icon
             name="work"
             size={20}
-            color={colors.primary}
+            color={colors.iconColor}
             style={styles.icon}
           />
           <Picker
@@ -203,7 +205,6 @@ export const EditScreen: React.FC<any> = ({route}) => {
         </View>
 
         <View style={styles.mapContainer}>
-          <Text style={styles.mapLabel}>location</Text>
           <GoogleMapsScreen
             onLocationSelected={handleLocationSelect}
             initialLocation={location ? location : null}
@@ -211,15 +212,19 @@ export const EditScreen: React.FC<any> = ({route}) => {
           />
         </View>
 
-        <TouchableOpacity style={styles.saveButton} onPress={saveContact}>
-          <Text style={styles.buttonText}>Save</Text>
-        </TouchableOpacity>
+        <View style={styles.actionsContainer}>
+          <TouchableOpacity style={styles.iconButton} onPress={saveContact}>
+            <Icon name="save" size={24} color="white" />
+            <Text style={styles.text}>Save</Text>
+          </TouchableOpacity>
 
-        <TouchableOpacity
-          style={styles.cancelButton}
-          onPress={() => navigation.goBack()}>
-          <Text style={styles.buttonText}>Cancel</Text>
-        </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.iconButton}
+            onPress={() => navigation.goBack()}>
+            <Icon name="remove-circle" size={24} color="white" />
+            <Text style={styles.text}>Cancel</Text>
+          </TouchableOpacity>
+        </View>
       </ScrollView>
     </View>
   );
@@ -232,27 +237,36 @@ const styles = StyleSheet.create({
     backgroundColor: colors.background,
   },
   photoContainer: {
-    backgroundColor: 'white',
+    backgroundColor: colors.cardBackground,
     alignItems: 'center',
     marginBottom: 15,
-    borderRadius: 50,
+    borderRadius: 100,
+    width: 150,
+    height: 150,
+    margin: 'auto',
   },
   photo: {
-    width: 100,
-    height: 100,
-    borderRadius: 50,
-    marginBottom: 10,
+    width: 150,
+    height: 150,
+    margin: 'auto',
+    borderRadius: 100,
   },
   photoText: {
-    color: colors.primary,
+    color: colors.text,
   },
+  selectPhoto: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+
   inputContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: colors.cardBackground,
     borderRadius: 8,
     paddingHorizontal: 10,
-    marginBottom: 15,
+    marginBottom: 10,
   },
   icon: {
     marginRight: 10,
@@ -260,6 +274,7 @@ const styles = StyleSheet.create({
   input: {
     flex: 1,
     color: colors.text,
+    fontSize: 16,
   },
   picker: {
     flex: 1,
@@ -315,5 +330,18 @@ const styles = StyleSheet.create({
   modalButtonText: {
     color: colors.primary,
     fontSize: 16,
+  },
+  iconButton: {
+    alignItems: 'center',
+  },
+  text: {
+    color: 'white',
+  },
+  actionsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '60%',
+    marginTop: 0,
+    margin: 'auto',
   },
 });
