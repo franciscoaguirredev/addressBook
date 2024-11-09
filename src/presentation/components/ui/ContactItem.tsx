@@ -4,6 +4,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import {useNavigation} from '@react-navigation/native';
 
 interface Props {
+  id: string;
   name: string;
   telephone: string;
   email: string;
@@ -11,9 +12,11 @@ interface Props {
   image?: string;
   isFirst?: boolean;
   isLast?: boolean;
+  onPress?: () => void;
 }
 
 export const ContactItem = ({
+  id,
   name,
   telephone,
   email,
@@ -23,7 +26,8 @@ export const ContactItem = ({
   isLast = false,
 }: Props) => {
   const navigation = useNavigation<any>();
-  const contact = {name, telephone, email, role, image};
+  const contact = {id,name, telephone, email, role, image};
+  // console.log(`DESDE CONTACTiTEM: ${contact.id}`)
 
   return (
     <Pressable
