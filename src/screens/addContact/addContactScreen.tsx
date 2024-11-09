@@ -95,21 +95,26 @@ export const AddContactScreen = () => {
           onRequestClose={closeModal}>
           <View style={styles.modalBackground}>
             <View style={styles.modalContainer}>
-              <Text style={styles.modalTitle}>Select photo</Text>
               <TouchableOpacity
                 style={styles.modalOption}
                 onPress={handleOpenCamera}>
-                <Icon name="photo-camera" size={24} color={colors.primary} />
+                <Icon name="photo-camera" size={24} color={colors.primary} style={styles.modalIcon}/>
                 <Text style={styles.modalOptionText}>Camera</Text>
               </TouchableOpacity>
               <TouchableOpacity
                 style={styles.modalOption}
                 onPress={handleOpenGallery}>
-                <Icon name="photo-library" size={24} color={colors.primary} />
+                <Icon name="photo-library" size={24} color={colors.primary}style={styles.modalIcon}/>
                 <Text style={styles.modalOptionText}>Gallery</Text>
               </TouchableOpacity>
               <TouchableOpacity style={styles.modalCancel} onPress={closeModal}>
                 <Text style={styles.modalCancelText}>Cancel</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => setIsModalVisible(false)}
+                style={styles.modalOption}>
+                <Icon name="close" size={24} color={colors.primary} style={styles.modalIcon}/>
+                <Text style={styles.modalOptionText}>Cancel</Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -119,16 +124,17 @@ export const AddContactScreen = () => {
           {photo ? (
             <Image source={{uri: photo}} style={styles.photo} />
           ) : (
-            <Icon name="photo-camera" size={30} color={colors.primary} />
+            <View style={styles.selectPhoto}>
+              <Icon name="photo-camera" size={30} color={colors.iconColor} />
+              <Text style={styles.photoText}>Add photo</Text>
+            </View>
           )}
-          <Text style={styles.photoText}>Add photo</Text>
         </TouchableOpacity>
-
         <View style={styles.inputContainer}>
           <Icon
             name="person"
             size={20}
-            color={colors.primary}
+            color={colors.iconColor}
             style={styles.icon}
           />
           <TextInput
@@ -144,7 +150,7 @@ export const AddContactScreen = () => {
           <Icon
             name="phone"
             size={20}
-            color={colors.primary}
+            color={colors.iconColor}
             style={styles.icon}
           />
           <TextInput
@@ -161,7 +167,7 @@ export const AddContactScreen = () => {
           <Icon
             name="email"
             size={20}
-            color={colors.primary}
+            color={colors.iconColor}
             style={styles.icon}
           />
           <TextInput
@@ -178,7 +184,7 @@ export const AddContactScreen = () => {
           <Icon
             name="work"
             size={20}
-            color={colors.primary}
+            color={colors.iconColor}
             style={styles.icon}
           />
           <Picker
@@ -192,15 +198,19 @@ export const AddContactScreen = () => {
 
         <GoogleMapsScreen onLocationSelected={handleLocationSelected} />
 
-        <TouchableOpacity style={styles.saveButton} onPress={saveContact}>
-          <Text style={styles.buttonText}>Save</Text>
-        </TouchableOpacity>
+        <View style={styles.actionsContainer}>
+          <TouchableOpacity style={styles.iconButton} onPress={saveContact}>
+            <Icon name="save" size={24} color="white" />
+            <Text style={styles.text}>Save</Text>
+          </TouchableOpacity>
 
-        <TouchableOpacity
-          style={styles.cancelButton}
-          onPress={() => navigation.goBack()}>
-          <Text style={styles.buttonText}>Cancel</Text>
-        </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.iconButton}
+            onPress={() => navigation.goBack()}>
+            <Icon name="remove-circle" size={24} color="white" />
+            <Text style={styles.text}>Cancel</Text>
+          </TouchableOpacity>
+        </View>
       </ScrollView>
     </View>
   );
@@ -213,19 +223,27 @@ const styles = StyleSheet.create({
     backgroundColor: colors.background,
   },
   photoContainer: {
-    backgroundColor: 'white',
+    backgroundColor: colors.cardBackground,
     alignItems: 'center',
     marginBottom: 15,
-    borderRadius: 50,
+    borderRadius: 100,
+    width: 150,
+    height: 150,
+    margin: 'auto',
+  },
+  selectPhoto: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   photo: {
-    width: 100,
-    height: 100,
-    borderRadius: 50,
-    marginBottom: 10,
+    width: 150,
+    height: 150,
+    margin: 'auto',
+    borderRadius: 100,
   },
   photoText: {
-    color: colors.primary,
+    color: colors.text,
   },
   inputContainer: {
     flexDirection: 'row',
@@ -234,6 +252,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     paddingHorizontal: 10,
     marginBottom: 15,
+    width: '100%',
   },
   icon: {
     marginRight: 10,
@@ -241,6 +260,7 @@ const styles = StyleSheet.create({
   input: {
     flex: 1,
     color: colors.text,
+    fontSize: 16,
   },
   picker: {
     flex: 1,
@@ -271,10 +291,10 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
   modalContainer: {
-    width: 300,
     backgroundColor: 'white',
     padding: 20,
-    borderRadius: 8,
+    borderRadius: 10,
+    width: '80%',
     alignItems: 'center',
   },
   modalTitle: {
@@ -286,7 +306,7 @@ const styles = StyleSheet.create({
   modalOption: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingVertical: 10,
+    padding: 10,
     width: '100%',
   },
   modalOptionText: {
@@ -300,5 +320,21 @@ const styles = StyleSheet.create({
   modalCancelText: {
     fontSize: 16,
     color: colors.text,
+  },
+  actionsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '60%',
+    marginTop: 17,
+    margin: 'auto',
+  },
+  iconButton: {
+    alignItems: 'center',
+  },
+  text: {
+    color: 'white',
+  },
+  modalIcon: {
+    marginRight: 10,
   },
 });

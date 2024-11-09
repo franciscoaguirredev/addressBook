@@ -1,5 +1,5 @@
 import {Pressable, StyleSheet, Text, View, Image} from 'react-native';
-import {colors} from '../../../config/theme/theme';
+import {colors, globalStyles} from '../../../config/theme/theme';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {useNavigation} from '@react-navigation/native';
 
@@ -57,14 +57,14 @@ export const ContactItem = ({
             name="account-circle"
             size={25}
             style={{marginRight: 10}}
-            color={colors.primary}
+            color={colors.iconColor}
           />
         )}
-        <Text style={{color: colors.text}}>{name}</Text>
+        <Text style={globalStyles.text}>{name}</Text>
         <Icon
           name="arrow-forward-ios"
           size={25}
-          style={{marginLeft: 'auto', color: colors.primary}}
+          style={{marginLeft: 'auto', color: colors.iconColor}}
         />
       </View>
     </Pressable>

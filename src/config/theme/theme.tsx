@@ -6,20 +6,26 @@ export interface ThemeColors {
   background: string;
   cardBackground: string;
   buttonTextColor: string;
+  iconColor: string;
 }
 export const colors: ThemeColors = {
   primary: '#000417',
-  text: 'black',
+  text: 'white',
   background: '#000417',
-  cardBackground: 'white',
+  cardBackground: '#383D56',
   buttonTextColor: 'white',
+  iconColor: 'white'
 };
 
 export const globalStyles = StyleSheet.create({
   title: {
-    fontSize: 30,
+    fontSize: 25,
     fontWeight: 'bold',
     color: colors.text,
+  },
+  text:{
+    fontSize: 16,
+    color: colors.text
   },
   sublitie: {
     fontSize: 20,

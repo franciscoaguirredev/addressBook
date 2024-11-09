@@ -37,25 +37,26 @@ export const HomeScreen = () => {
       const keys = await AsyncStorage.getAllKeys();
       const contactKeys = keys.filter(key => key.startsWith('contact_'));
       const storedContacts = await AsyncStorage.multiGet(contactKeys);
-  
+
       const contactList: IContact[] = storedContacts
         .map(([key, value]) => {
           if (value) {
             const parsedContact = JSON.parse(value);
-            return { contactId: key.replace('contact_', ''), ...parsedContact };
+            return {contactId: key.replace('contact_', ''), ...parsedContact};
           }
           return null;
         })
         .filter(Boolean) as IContact[];
-  
+
       setContacts(contactList.sort((a, b) => a.name.localeCompare(b.name)));
-      setFilteredContacts(contactList.sort((a, b) => a.name.localeCompare(b.name)));
+      setFilteredContacts(
+        contactList.sort((a, b) => a.name.localeCompare(b.name)),
+      );
     } catch (error) {
       Alert.alert('Error', 'There was a problem loading the contacts.');
       console.error(error);
     }
   };
-
 
   const handleSearchChange = (text: string) => {
     setSearchText(text);
@@ -107,7 +108,7 @@ export const HomeScreen = () => {
               <TextInput
                 placeholder="Search Contact"
                 placeholderTextColor={colors.text}
-                style={styles.searchInput}
+                style={globalStyles.text}
                 value={searchText}
                 onChangeText={handleSearchChange}
               />
@@ -115,8 +116,15 @@ export const HomeScreen = () => {
             <Pressable
               style={styles.addButton}
               onPress={() => navigation.navigate('AddContactScreen')}>
-              <Icon name="add" size={20} color={colors.primary} />
-              <Text style={styles.addButtonText}>Add contact</Text>
+              <View style={styles.searchContainerAdd}>
+                <Icon
+                  name="add"
+                  size={20}
+                  color={colors.iconColor}
+                  style={styles.addIcon}
+                />
+                <Text style={styles.addButtonText}>Add contact</Text>
+              </View>
             </Pressable>
           </View>
           {Object.keys(groupedContacts)
@@ -137,7 +145,7 @@ export const HomeScreen = () => {
                     isLast={index === groupedContacts[letter].length - 1}
                     onPress={() =>
                       navigation.navigate('ProfileContactScreen', {contact})
-                    } 
+                    }
                   />
                 ))}
               </View>
@@ -163,6 +171,14 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     marginVertical: 10,
   },
+  searchContainerAdd: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: colors.cardBackground,
+    borderRadius: 8,
+    paddingHorizontal: 10,
+    marginVertical: 10,
+  },
   searchIcon: {
     marginRight: 5,
   },
@@ -173,20 +189,27 @@ const styles = StyleSheet.create({
   addButton: {
     flexDirection: 'row',
     alignItems: 'center',
-    padding: 10,
     backgroundColor: colors.cardBackground,
     borderRadius: 8,
-    marginBottom: 10,
+    paddingHorizontal: 10,
+    paddingVertical: 3,
+    marginVertical: 10,
   },
   addButtonText: {
-    color: colors.primary,
-    marginLeft: 5,
+    color: colors.text,
+    marginLeft: 0,
+    fontSize: 16,
+  },
+  addIcon: {
+    marginRight: 10,
+    marginLeft: -10,
   },
   sectionTitle: {
     fontSize: 18,
     fontWeight: 'bold',
-    color: 'yellow',
+    color: colors.text,
     marginTop: 15,
+    marginBottom: 2,
     paddingHorizontal: 10,
   },
 });

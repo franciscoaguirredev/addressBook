@@ -46,13 +46,24 @@ export const EditScreen: React.FC<any> = ({route}) => {
     });
   };
 
-  const handleLocationSelect = (location: { latitude: number; longitude: number }) => {
+  const handleLocationSelect = (location: {
+    latitude: number;
+    longitude: number;
+  }) => {
     setLocation(location);
   };
 
   const saveContact = async () => {
     try {
-      const updatedContact = {contactId: contact.contactId, name, telephone, email, role, location, photo};
+      const updatedContact = {
+        contactId: contact.contactId,
+        name,
+        telephone,
+        email,
+        role,
+        location,
+        photo,
+      };
       const contactId = `contact_${contact.contactId}`;
       await AsyncStorage.setItem(contactId, JSON.stringify(updatedContact));
 
@@ -77,16 +88,37 @@ export const EditScreen: React.FC<any> = ({route}) => {
           onRequestClose={() => setIsModalVisible(false)}>
           <View style={styles.modalBackground}>
             <View style={styles.modalContainer}>
-              <TouchableOpacity onPress={handleOpenCamera} style={styles.modalButton}>
-                <Icon name="photo-camera" size={20} color={colors.primary} style={styles.modalIcon} />
+              <TouchableOpacity
+                onPress={handleOpenCamera}
+                style={styles.modalButton}>
+                <Icon
+                  name="photo-camera"
+                  size={20}
+                  color={colors.primary}
+                  style={styles.modalIcon}
+                />
                 <Text style={styles.modalButtonText}>Camera</Text>
               </TouchableOpacity>
-              <TouchableOpacity onPress={handleOpenGallery} style={styles.modalButton}>
-                <Icon name="collections" size={20} color={colors.primary} style={styles.modalIcon} />
+              <TouchableOpacity
+                onPress={handleOpenGallery}
+                style={styles.modalButton}>
+                <Icon
+                  name="collections"
+                  size={20}
+                  color={colors.primary}
+                  style={styles.modalIcon}
+                />
                 <Text style={styles.modalButtonText}>Gallery</Text>
               </TouchableOpacity>
-              <TouchableOpacity onPress={() => setIsModalVisible(false)} style={styles.modalButton}>
-                <Icon name="close" size={20} color={colors.primary} style={styles.modalIcon} />
+              <TouchableOpacity
+                onPress={() => setIsModalVisible(false)}
+                style={styles.modalButton}>
+                <Icon
+                  name="close"
+                  size={20}
+                  color={colors.primary}
+                  style={styles.modalIcon}
+                />
                 <Text style={styles.modalButtonText}>Cancel</Text>
               </TouchableOpacity>
             </View>
@@ -175,7 +207,7 @@ export const EditScreen: React.FC<any> = ({route}) => {
           <GoogleMapsScreen
             onLocationSelected={handleLocationSelect}
             initialLocation={location ? location : null}
-            mapHeight={300} 
+            mapHeight={300}
           />
         </View>
 
@@ -285,4 +317,3 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
 });
-

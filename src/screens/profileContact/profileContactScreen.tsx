@@ -107,9 +107,9 @@ export const ProfileScreen: React.FC<any> = ({route}) => {
         />
       )}
       <Text style={styles.title}>{contactData.name}</Text>
-      <Text style={styles.text}>Telephone: {contactData.telephone}</Text>
-      <Text style={styles.text}>Email: {contactData.email}</Text>
-      <Text style={styles.text}>Role: {contactData.role}</Text>
+      <Text style={styles.textInfo}>{contactData.telephone}</Text>
+      <Text style={styles.textInfo}>{contactData.email}</Text>
+      <Text style={styles.textInfo}>{contactData.role}</Text>
 
       {weatherData && (
         <View style={styles.weatherContainer}>
@@ -150,11 +150,11 @@ export const ProfileScreen: React.FC<any> = ({route}) => {
           onPress={() =>
             navigation.navigate('EditContactScreen', {contact: contactData})
           }>
-          <Icon name="edit" size={24} color="black" />
+          <Icon name="edit" size={24} color={colors.iconColor} />
           <Text style={styles.text}>Edit</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.iconButton} onPress={confirmDelete}>
-          <Icon name="delete" size={24} color="black" />
+          <Icon name="delete" size={24} color={colors.iconColor} />
           <Text style={styles.text}>Delete</Text>
         </TouchableOpacity>
       </View>
@@ -167,13 +167,13 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 20,
     alignItems: 'center',
-    backgroundColor: 'yellow',
+    backgroundColor: colors.primary,
   },
   photo: {
-    width: 100,
-    height: 100,
-    borderRadius: 50,
-    marginBottom: 10,
+    width: 150,
+    height: 150,
+    borderRadius: 100,
+    marginBottom: 30,
   },
   photoPlaceholder: {
     fontSize: 16,
@@ -181,9 +181,9 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   title: {
-    fontSize: 24,
+    fontSize: 26,
     fontWeight: 'bold',
-    color: 'black',
+    color: colors.text,
   },
   actionsContainer: {
     flexDirection: 'row',
@@ -195,12 +195,21 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   text: {
-    color: 'black',
+    color:colors.text,
+  },
+  textInfo: {
+    color:colors.text,
+    fontSize:22
   },
   weatherContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginVertical: 10,
+    marginHorizontal:20,
+    marginTop: 30,
+    marginBottom: 10, 
+    paddingRight:20,
+    backgroundColor: '#0087FF',
+    borderRadius: 10
   },
   weatherIcon: {
     width: 50,
@@ -210,11 +219,11 @@ const styles = StyleSheet.create({
   weatherText: {
     fontSize: 18,
     fontWeight: 'bold',
-    color: 'black',
+    color: colors.text,
   },
   weatherDescription: {
     fontSize: 16,
-    color: 'grey',
+    color: colors.text,
     marginLeft: 5,
   },
   containerMap: {
