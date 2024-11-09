@@ -41,14 +41,16 @@ export const HomeScreen = () => {
         .map(([key, value]) => {
           if (value) {
             const parsedContact = JSON.parse(value);
-            return { contactId: key.replace('contact_', ''), ...parsedContact };
+            return {contactId: key.replace('contact_', ''), ...parsedContact};
           }
           return null;
         })
         .filter(Boolean) as IContact[];
 
       setContacts(contactList.sort((a, b) => a.name.localeCompare(b.name)));
-      setFilteredContacts(contactList.sort((a, b) => a.name.localeCompare(b.name)));
+      setFilteredContacts(
+        contactList.sort((a, b) => a.name.localeCompare(b.name)),
+      );
     } catch (error) {
       Alert.alert('Error', 'There was a problem loading the contacts.');
       console.error(error);
@@ -59,7 +61,7 @@ export const HomeScreen = () => {
     setSearchText(text);
     if (text) {
       const filtered = contacts.filter(contact =>
-        contact.name.toLowerCase().includes(text.toLowerCase())
+        contact.name.toLowerCase().includes(text.toLowerCase()),
       );
       setFilteredContacts(filtered);
     } else {
@@ -68,14 +70,17 @@ export const HomeScreen = () => {
   };
 
   const groupContactsByLetter = (contactsList: IContact[]) => {
-    return contactsList.reduce((groups: {[key: string]: IContact[]}, contact) => {
-      const firstLetter = contact.name.charAt(0).toUpperCase();
-      if (!groups[firstLetter]) {
-        groups[firstLetter] = [];
-      }
-      groups[firstLetter].push(contact);
-      return groups;
-    }, {});
+    return contactsList.reduce(
+      (groups: {[key: string]: IContact[]}, contact) => {
+        const firstLetter = contact.name.charAt(0).toUpperCase();
+        if (!groups[firstLetter]) {
+          groups[firstLetter] = [];
+        }
+        groups[firstLetter].push(contact);
+        return groups;
+      },
+      {},
+    );
   };
 
   const groupedContacts = groupContactsByLetter(filteredContacts);
@@ -114,26 +119,29 @@ export const HomeScreen = () => {
               <Text style={styles.addButtonText}>Add contact</Text>
             </Pressable>
           </View>
-          {Object.keys(groupedContacts).sort().map(letter => (
-  <View key={letter}>
-    <Text style={styles.sectionTitle}>{letter}</Text>
-    {groupedContacts[letter].map((contact, index) => (
-      <ContactItem
-        key={contact.contactId}
-        id={contact.contactId}
-        name={contact.name}
-        telephone={contact.telephone}
-        email={contact.email}
-        role={contact.role}
-        image={contact.image}
-        isFirst={index === 0}
-        isLast={index === groupedContacts[letter].length - 1}
-        onPress={() => navigation.navigate('ProfileContactScreen', { contact })}  // Aquí corregimos el onPress
-      />
-    ))}
-  </View>
-))}
-          
+          {Object.keys(groupedContacts)
+            .sort()
+            .map(letter => (
+              <View key={letter}>
+                <Text style={styles.sectionTitle}>{letter}</Text>
+                {groupedContacts[letter].map((contact, index) => (
+                  <ContactItem
+                    key={contact.contactId}
+                    id={contact.contactId}
+                    name={contact.name}
+                    telephone={contact.telephone}
+                    email={contact.email}
+                    role={contact.role}
+                    image={contact.image}
+                    isFirst={index === 0}
+                    isLast={index === groupedContacts[letter].length - 1}
+                    onPress={() =>
+                      navigation.navigate('ProfileContactScreen', {contact})
+                    } 
+                  />
+                ))}
+              </View>
+            ))}
         </ScrollView>
       </View>
     </View>
@@ -182,4 +190,3 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
   },
 });
-
