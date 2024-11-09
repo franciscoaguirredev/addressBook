@@ -33,29 +33,29 @@ export const HomeScreen = () => {
 
   const fetchContacts = async () => {
     try {
+      setSearchText('');
       const keys = await AsyncStorage.getAllKeys();
       const contactKeys = keys.filter(key => key.startsWith('contact_'));
       const storedContacts = await AsyncStorage.multiGet(contactKeys);
-
+  
       const contactList: IContact[] = storedContacts
         .map(([key, value]) => {
           if (value) {
             const parsedContact = JSON.parse(value);
-            return {contactId: key.replace('contact_', ''), ...parsedContact};
+            return { contactId: key.replace('contact_', ''), ...parsedContact };
           }
           return null;
         })
         .filter(Boolean) as IContact[];
-
+  
       setContacts(contactList.sort((a, b) => a.name.localeCompare(b.name)));
-      setFilteredContacts(
-        contactList.sort((a, b) => a.name.localeCompare(b.name)),
-      );
+      setFilteredContacts(contactList.sort((a, b) => a.name.localeCompare(b.name)));
     } catch (error) {
       Alert.alert('Error', 'There was a problem loading the contacts.');
       console.error(error);
     }
   };
+
 
   const handleSearchChange = (text: string) => {
     setSearchText(text);

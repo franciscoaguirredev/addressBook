@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import {
   View,
   Text,
@@ -11,11 +11,11 @@ import {
   Modal,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import { Picker } from '@react-native-picker/picker';
-import { useNavigation } from '@react-navigation/native';
+import {Picker} from '@react-native-picker/picker';
+import {useNavigation} from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { colors } from '../../config/theme/theme';
-import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
+import {colors} from '../../config/theme/theme';
+import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import GoogleMapsScreen from '../googleMaps/googleMapsScreen';
 import uuid from 'react-native-uuid';
 
@@ -26,9 +26,12 @@ export const AddContactScreen = () => {
   const [email, setEmail] = useState('');
   const [role, setRole] = useState('Cliente');
 
-  const [location, setLocation] = useState<{ latitude: number; longitude: number }>({
-    latitude: 6.249468,   
-    longitude: -75.567938, 
+  const [location, setLocation] = useState<{
+    latitude: number;
+    longitude: number;
+  }>({
+    latitude: 6.249468,
+    longitude: -75.567938,
   });
   const [photo, setPhoto] = useState<string | null>(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -37,7 +40,7 @@ export const AddContactScreen = () => {
   const closeModal = () => setIsModalVisible(false);
 
   const handleOpenCamera = () => {
-    launchCamera({ mediaType: 'photo' }, response => {
+    launchCamera({mediaType: 'photo'}, response => {
       if (response.assets && response.assets.length > 0) {
         setPhoto(response.assets[0].uri || null);
       }
@@ -46,7 +49,7 @@ export const AddContactScreen = () => {
   };
 
   const handleOpenGallery = () => {
-    launchImageLibrary({ mediaType: 'photo' }, response => {
+    launchImageLibrary({mediaType: 'photo'}, response => {
       if (response.assets && response.assets.length > 0) {
         setPhoto(response.assets[0].uri || null);
       }
@@ -57,7 +60,15 @@ export const AddContactScreen = () => {
   const saveContact = async () => {
     try {
       const id = uuid.v4();
-      const contact = { contactId:id, name, telephone, email, role, location:location, photo };
+      const contact = {
+        contactId: id,
+        name,
+        telephone,
+        email,
+        role,
+        location: location,
+        photo,
+      };
       await AsyncStorage.setItem(`contact_${id}`, JSON.stringify(contact));
       Alert.alert('Saved contact', 'The contact has been successfully saved.');
       navigation.goBack();
@@ -67,7 +78,10 @@ export const AddContactScreen = () => {
     }
   };
 
-  const handleLocationSelected = (coord: { latitude: number; longitude: number }) => {
+  const handleLocationSelected = (coord: {
+    latitude: number;
+    longitude: number;
+  }) => {
     setLocation(coord);
   };
 
@@ -78,16 +92,19 @@ export const AddContactScreen = () => {
           visible={isModalVisible}
           transparent={true}
           animationType="slide"
-          onRequestClose={closeModal}
-        >
+          onRequestClose={closeModal}>
           <View style={styles.modalBackground}>
             <View style={styles.modalContainer}>
               <Text style={styles.modalTitle}>Select photo</Text>
-              <TouchableOpacity style={styles.modalOption} onPress={handleOpenCamera}>
+              <TouchableOpacity
+                style={styles.modalOption}
+                onPress={handleOpenCamera}>
                 <Icon name="photo-camera" size={24} color={colors.primary} />
                 <Text style={styles.modalOptionText}>Camera</Text>
               </TouchableOpacity>
-              <TouchableOpacity style={styles.modalOption} onPress={handleOpenGallery}>
+              <TouchableOpacity
+                style={styles.modalOption}
+                onPress={handleOpenGallery}>
                 <Icon name="photo-library" size={24} color={colors.primary} />
                 <Text style={styles.modalOptionText}>Gallery</Text>
               </TouchableOpacity>
@@ -100,7 +117,7 @@ export const AddContactScreen = () => {
 
         <TouchableOpacity style={styles.photoContainer} onPress={openModal}>
           {photo ? (
-            <Image source={{ uri: photo }} style={styles.photo} />
+            <Image source={{uri: photo}} style={styles.photo} />
           ) : (
             <Icon name="photo-camera" size={30} color={colors.primary} />
           )}
@@ -108,7 +125,12 @@ export const AddContactScreen = () => {
         </TouchableOpacity>
 
         <View style={styles.inputContainer}>
-          <Icon name="person" size={20} color={colors.primary} style={styles.icon} />
+          <Icon
+            name="person"
+            size={20}
+            color={colors.primary}
+            style={styles.icon}
+          />
           <TextInput
             placeholder="Name"
             placeholderTextColor={colors.text}
@@ -119,7 +141,12 @@ export const AddContactScreen = () => {
         </View>
 
         <View style={styles.inputContainer}>
-          <Icon name="phone" size={20} color={colors.primary} style={styles.icon} />
+          <Icon
+            name="phone"
+            size={20}
+            color={colors.primary}
+            style={styles.icon}
+          />
           <TextInput
             placeholder="Telephone"
             placeholderTextColor={colors.text}
@@ -131,7 +158,12 @@ export const AddContactScreen = () => {
         </View>
 
         <View style={styles.inputContainer}>
-          <Icon name="email" size={20} color={colors.primary} style={styles.icon} />
+          <Icon
+            name="email"
+            size={20}
+            color={colors.primary}
+            style={styles.icon}
+          />
           <TextInput
             placeholder="Email"
             placeholderTextColor={colors.text}
@@ -143,7 +175,12 @@ export const AddContactScreen = () => {
         </View>
 
         <View style={styles.inputContainer}>
-          <Icon name="work" size={20} color={colors.primary} style={styles.icon} />
+          <Icon
+            name="work"
+            size={20}
+            color={colors.primary}
+            style={styles.icon}
+          />
           <Picker
             selectedValue={role}
             onValueChange={itemValue => setRole(itemValue)}
@@ -159,7 +196,9 @@ export const AddContactScreen = () => {
           <Text style={styles.buttonText}>Save</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.cancelButton} onPress={() => navigation.goBack()}>
+        <TouchableOpacity
+          style={styles.cancelButton}
+          onPress={() => navigation.goBack()}>
           <Text style={styles.buttonText}>Cancel</Text>
         </TouchableOpacity>
       </ScrollView>

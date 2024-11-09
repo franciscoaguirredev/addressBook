@@ -11,19 +11,28 @@ import {
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import MapView, {Marker} from 'react-native-maps';
-import { getWeather } from '../../config/utils/apiWeather';
-import { colors } from '../../config/theme/theme';
+import {getWeather} from '../../config/utils/apiWeather';
+import {colors} from '../../config/theme/theme';
 
 export const ProfileScreen: React.FC<any> = ({route}) => {
   const {contact} = route.params;
   const navigation = useNavigation<any>();
   const [contactData, setContactData] = useState(contact);
-  const [location, setLocation] = useState<{ latitude: number; longitude: number } | null>(null);
-  const [weatherData, setWeatherData] = useState<{temperature: number; weatherDescription: string; iconURL: string} | null>(null);
+  const [location, setLocation] = useState<{
+    latitude: number;
+    longitude: number;
+  } | null>(null);
+  const [weatherData, setWeatherData] = useState<{
+    temperature: number;
+    weatherDescription: string;
+    iconURL: string;
+  } | null>(null);
 
   useEffect(() => {
     const loadContactData = async () => {
-      const updatedContact = await AsyncStorage.getItem(`contact_${contact.id}`);
+      const updatedContact = await AsyncStorage.getItem(
+        `contact_${contact.id}`,
+      );
       if (updatedContact) {
         const parsedContact = JSON.parse(updatedContact);
         setContactData(parsedContact);
@@ -75,7 +84,10 @@ export const ProfileScreen: React.FC<any> = ({route}) => {
   const handleDelete = async () => {
     try {
       await AsyncStorage.removeItem(`contact_${contact.id}`);
-      Alert.alert('Contact deleted', 'The contact has been successfully deleted.');
+      Alert.alert(
+        'Contact deleted',
+        'The contact has been successfully deleted.',
+      );
       navigation.goBack();
     } catch (error) {
       Alert.alert('Error', 'The contact could not be deleted.');
@@ -88,11 +100,11 @@ export const ProfileScreen: React.FC<any> = ({route}) => {
         <Image source={{uri: contactData.photo}} style={styles.photo} />
       ) : (
         <Icon
-        name="account-circle"
-        size={150}
-        style={{marginRight: 10}}
-        color={colors.primary}
-      />
+          name="account-circle"
+          size={150}
+          style={{marginRight: 10}}
+          color={colors.primary}
+        />
       )}
       <Text style={styles.title}>{contactData.name}</Text>
       <Text style={styles.text}>Telephone: {contactData.telephone}</Text>
@@ -101,9 +113,16 @@ export const ProfileScreen: React.FC<any> = ({route}) => {
 
       {weatherData && (
         <View style={styles.weatherContainer}>
-          <Image source={{uri: weatherData.iconURL}} style={styles.weatherIcon} />
-          <Text style={styles.weatherText}>{weatherData.temperature.toFixed(1)}°C</Text>
-          <Text style={styles.weatherDescription}>{weatherData.weatherDescription}</Text>
+          <Image
+            source={{uri: weatherData.iconURL}}
+            style={styles.weatherIcon}
+          />
+          <Text style={styles.weatherText}>
+            {weatherData.temperature.toFixed(1)}°C
+          </Text>
+          <Text style={styles.weatherDescription}>
+            {weatherData.weatherDescription}
+          </Text>
         </View>
       )}
 
@@ -116,8 +135,7 @@ export const ProfileScreen: React.FC<any> = ({route}) => {
               longitude: location.longitude,
               latitudeDelta: 0.015,
               longitudeDelta: 0.0121,
-            }}
-          >
+            }}>
             <Marker
               coordinate={location}
               title={contactData.name}
@@ -149,7 +167,7 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 20,
     alignItems: 'center',
-       backgroundColor: 'yellow'
+    backgroundColor: 'yellow',
   },
   photo: {
     width: 100,
@@ -171,7 +189,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     width: '60%',
-    marginTop: 40
+    marginTop: 40,
   },
   iconButton: {
     alignItems: 'center',
