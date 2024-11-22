@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import {
   View,
   Text,
@@ -10,7 +10,7 @@ import {
   Alert,
   Image,
 } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 
 const RegisterScreen = () => {
   const [name, setName] = useState('');
@@ -30,13 +30,14 @@ const RegisterScreen = () => {
           },
           body: JSON.stringify({
             email: email,
-            password: password
+            password: password,
           }),
         },
       );
       if (response.ok) {
-      Alert.alert('successful registration');
-      navigation.navigate('LoginScreen');}
+        Alert.alert('successful registration');
+        navigation.navigate('LoginScreen');
+      }
     } catch (error) {
       Alert.alert('Error', 'There was a problem registering.');
       console.error(error);
