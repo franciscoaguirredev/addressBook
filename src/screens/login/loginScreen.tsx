@@ -28,16 +28,36 @@ const LoginScreen = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const navigation = useNavigation<any>();
 
-  const handleLogin = async () => {
+  const handleLogin = async (email: string, password: string) => {
     try {
-      const storedEmail = await AsyncStorage.getItem('email');
-      const storedPassword = await AsyncStorage.getItem('password');
-
-      if (email === storedEmail && password === storedPassword) {
-        Alert.alert('Bienvenido', 'Inicio de sesión exitoso');
-        // Aquí puedes redirigir a la pantalla principal o dashboard
-      } else {
+      await AsyncStorage.setItem('token', '');
+      if (email == undefined && !password == undefined) {
         setModalVisible(true);
+      } else {
+        const response = await fetch(
+          'https://closetoyoureactnativebackend.onrender.com/api/auth/login',
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              email: email,
+              password: password,
+            }),
+          },
+        );
+
+        if (response.ok) {
+          const {data} = await response.json();
+          await AsyncStorage.setItem('token', data.accessToken);
+          setModalVisible(true);
+          Alert.alert('Welcome!');
+          navigation.navigate('HomeScreen');
+        } else {
+          Alert.alert('Error', 'There was a problem with login');
+          setModalVisible(false);
+        }
       }
     } catch (error) {
       console.error('Error al verificar credenciales:', error);
@@ -46,7 +66,7 @@ const LoginScreen = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.welcomeText}>¡Bienvenido!</Text>
+      <Text style={styles.welcomeText}>Close To You - X-Ray</Text>
 
       <TextInput
         style={styles.input}
@@ -74,15 +94,10 @@ const LoginScreen = () => {
         </TouchableOpacity>
       </View>
 
-      <TouchableOpacity style={styles.button} onPress={handleLogin}>
-        <Text style={styles.buttonText}>Acceder</Text>
-      </TouchableOpacity>
-
       <TouchableOpacity
-        onPress={() =>
-          Alert.alert('Recuperar contraseña', 'Funcionalidad no implementada')
-        }>
-        <Text style={styles.linkText}>Recuperar contraseña</Text>
+        style={styles.button}
+        onPress={() => handleLogin(email, password)}>
+        <Text style={styles.buttonText}>Acceder</Text>
       </TouchableOpacity>
 
       <TouchableOpacity onPress={() => navigation.navigate('RegisterScreen')}>

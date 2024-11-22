@@ -31,30 +31,62 @@ export const HomeScreen = () => {
   const [searchText, setSearchText] = useState('');
   const navigation = useNavigation<any>();
 
+  // const fetchContacts = async () => {
+  //   try {
+  //     setSearchText('');
+  //     const keys = await AsyncStorage.getAllKeys();
+  //     const contactKeys = keys.filter(key => key.startsWith('contact_'));
+  //     const storedContacts = await AsyncStorage.multiGet(contactKeys);
+
+  //     const contactList: IContact[] = storedContacts
+  //       .map(([key, value]) => {
+  //         if (value) {
+  //           const parsedContact = JSON.parse(value);
+  //           return {contactId: key.replace('contact_', ''), ...parsedContact};
+  //         }
+  //         return null;
+  //       })
+  //       .filter(Boolean) as IContact[];
+
+  //     setContacts(contactList.sort((a, b) => a.name.localeCompare(b.name)));
+  //     setFilteredContacts(
+  //       contactList.sort((a, b) => a.name.localeCompare(b.name)),
+  //     );
+  //   } catch (error) {
+  //     Alert.alert('Error', 'There was a problem loading the contacts.');
+  //     console.error(error);
+  //   }
+  // };
+
   const fetchContacts = async () => {
     try {
-      setSearchText('');
-      const keys = await AsyncStorage.getAllKeys();
-      const contactKeys = keys.filter(key => key.startsWith('contact_'));
-      const storedContacts = await AsyncStorage.multiGet(contactKeys);
-
-      const contactList: IContact[] = storedContacts
-        .map(([key, value]) => {
-          if (value) {
-            const parsedContact = JSON.parse(value);
-            return {contactId: key.replace('contact_', ''), ...parsedContact};
-          }
-          return null;
-        })
-        .filter(Boolean) as IContact[];
-
-      setContacts(contactList.sort((a, b) => a.name.localeCompare(b.name)));
-      setFilteredContacts(
-        contactList.sort((a, b) => a.name.localeCompare(b.name)),
+      const token = await AsyncStorage.getItem('token');
+      const response = await fetch(
+        'https://closetoyoureactnativebackend.onrender.com/api/contacts',
+        {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+        },
       );
+
+      if (response.ok) {
+        const {data} = await response.json();
+        const contactList = data.sort((a: any, b: any) =>
+          a.name.localeCompare(b.name),
+        );
+        setContacts(
+          contactList.sort((a: any, b: any) => a.name.localeCompare(b.name)),
+        );
+        setFilteredContacts(
+          contactList.sort((a: any, b: any) => a.name.localeCompare(b.name)),
+        );
+        console.log(contactList);
+      }
     } catch (error) {
-      Alert.alert('Error', 'There was a problem loading the contacts.');
-      console.error(error);
+      console.error('Error al obtener contactos:', error);
     }
   };
 
@@ -134,8 +166,8 @@ export const HomeScreen = () => {
                 <Text style={styles.sectionTitle}>{letter}</Text>
                 {groupedContacts[letter].map((contact, index) => (
                   <ContactItem
-                    key={contact.contactId}
-                    id={contact.contactId}
+                    key={contact.id}
+                    id={contact.id}
                     name={contact.name}
                     telephone={contact.telephone}
                     email={contact.email}
