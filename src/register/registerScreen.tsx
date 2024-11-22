@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -10,67 +10,39 @@ import {
   Alert,
   Image,
 } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import {
-  launchCamera,
-  launchImageLibrary,
-  CameraOptions,
-} from 'react-native-image-picker';
-import {useNavigation} from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 
 const RegisterScreen = () => {
-  const [image, setImage] = useState<string | null>(null);
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [modalVisible, setModalVisible] = useState(false);
   const navigation = useNavigation<any>();
 
-  const pickImage = (source: 'camera' | 'gallery') => {
-    const options: CameraOptions = {
-      mediaType: 'photo', // 'photo' es un valor válido para 'mediaType'
-      includeBase64: false,
-      maxWidth: 200,
-      maxHeight: 200,
-    };
-
-    if (source === 'camera') {
-      launchCamera(options, response => {
-        if (response?.assets && response.assets.length > 0) {
-          setImage(response.assets[0].uri ?? null); // Asegúrate de manejar undefined
-        } else if (response?.errorCode) {
-          Alert.alert('Error', 'No se pudo acceder a la cámara.');
-        }
-      });
-    } else {
-      launchImageLibrary(options, response => {
-        if (response?.assets && response.assets.length > 0) {
-          setImage(response.assets[0].uri ?? null); // Asegúrate de manejar undefined
-        } else if (response?.errorCode) {
-          Alert.alert('Error', 'No se pudo acceder a la galería.');
-        }
-      });
-    }
-  };
-
-  // Función para guardar el usuario en AsyncStorage
   const handleRegister = async () => {
-    if (!name || !email || !password) {
-      Alert.alert('Error', 'Todos los campos son obligatorios.');
-      return;
-    }
-
     try {
-      await AsyncStorage.setItem('email', email);
-      await AsyncStorage.setItem('password', password);
-      setModalVisible(true);
+      const response = await fetch(
+        'https://closetoyoureactnativebackend.onrender.com/api/auth/register',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            email: email,
+            password: password
+          }),
+        },
+      );
+      if (response.ok) {
+      Alert.alert('successful registration');
+      navigation.navigate('LoginScreen');}
     } catch (error) {
-      console.error('Error al guardar el usuario:', error);
-      Alert.alert('Error', 'No se pudo completar el registro.');
+      Alert.alert('Error', 'There was a problem registering.');
+      console.error(error);
     }
   };
 
-  // Cierra el modal y regresa al login
   const handleModalClose = () => {
     setModalVisible(false);
     navigation.navigate('LoginScreen');
@@ -80,32 +52,6 @@ const RegisterScreen = () => {
     <View style={styles.container}>
       <Text style={styles.title}>Registro</Text>
 
-      <View style={styles.imageContainer}>
-        {image ? (
-          <Image source={{uri: image}} style={styles.image} />
-        ) : (
-          <Text style={styles.placeholderText}>Selecciona una imagen</Text>
-        )}
-        <View style={styles.imageButtons}>
-          <TouchableOpacity
-            style={styles.imageButton}
-            onPress={() => pickImage('camera')}>
-            <Text style={styles.buttonText}>Cámara</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.imageButton}
-            onPress={() => pickImage('gallery')}>
-            <Text style={styles.buttonText}>Galería</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
-
-      <TextInput
-        style={styles.input}
-        placeholder="Nombre"
-        value={name}
-        onChangeText={setName}
-      />
       <TextInput
         style={styles.input}
         placeholder="Correo electrónico"
@@ -181,7 +127,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     padding: 10,
     marginBottom: 15,
-    backgroundColor: '#fff',
+    backgroundColor: 'black',
   },
   registerButton: {
     backgroundColor: '#28a745',

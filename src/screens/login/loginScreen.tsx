@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {NativeStackScreenProps} from 'react-native-screens/lib/typescript/native-stack/types';
-import {useNavigation} from '@react-navigation/native';
+import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import {colors} from '../../config/theme/theme';
 
 type RootStackParamList = {
@@ -22,16 +22,17 @@ type RootStackParamList = {
 type Props = NativeStackScreenProps<RootStackParamList, 'LoginScreen'>;
 
 const LoginScreen = () => {
+  const navigation = useNavigation<any>();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
-  const navigation = useNavigation<any>();
 
   const handleLogin = async (email: string, password: string) => {
+    await AsyncStorage.removeItem('token');;
     try {
-      await AsyncStorage.setItem('token', '');
-      if (email == undefined && !password == undefined) {
+      if (email =='' || password =='') {
+        console.log('entra a if');
         setModalVisible(true);
       } else {
         const response = await fetch(
@@ -51,26 +52,30 @@ const LoginScreen = () => {
         if (response.ok) {
           const {data} = await response.json();
           await AsyncStorage.setItem('token', data.accessToken);
-          setModalVisible(true);
-          Alert.alert('Welcome!');
           navigation.navigate('HomeScreen');
         } else {
-          Alert.alert('Error', 'There was a problem with login');
+          Alert.alert('Error', 'Email or password incorrect');
           setModalVisible(false);
         }
       }
     } catch (error) {
-      console.error('Error al verificar credenciales:', error);
+      console.error('Error verifying credentials:', error);
     }
   };
 
+  useFocusEffect(
+    useCallback(() => {
+      setEmail('');
+      setPassword('');
+    }, [])
+  );
   return (
     <View style={styles.container}>
       <Text style={styles.welcomeText}>Close To You - X-Ray</Text>
 
       <TextInput
         style={styles.input}
-        placeholder="Correo electrónico"
+        placeholder="email address"
         placeholderTextColor={colors.text}
         value={email}
         onChangeText={setEmail}
@@ -81,7 +86,7 @@ const LoginScreen = () => {
       <View style={styles.passwordContainer}>
         <TextInput
           style={styles.passwordInput}
-          placeholder="Contraseña"
+          placeholder="Password"
           placeholderTextColor={colors.text}
           value={password}
           onChangeText={setPassword}
@@ -89,7 +94,7 @@ const LoginScreen = () => {
         />
         <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
           <Text style={styles.showPasswordText}>
-            {showPassword ? 'Ocultar' : 'Mostrar'}
+            {showPassword ? 'Hide' : 'Show'}
           </Text>
         </TouchableOpacity>
       </View>
@@ -97,18 +102,18 @@ const LoginScreen = () => {
       <TouchableOpacity
         style={styles.button}
         onPress={() => handleLogin(email, password)}>
-        <Text style={styles.buttonText}>Acceder</Text>
+        <Text style={styles.buttonText}>Log in</Text>
       </TouchableOpacity>
 
       <TouchableOpacity onPress={() => navigation.navigate('RegisterScreen')}>
-        <Text style={styles.linkText}>¿No tienes cuenta? ¡Regístrate!</Text>
+        <Text style={styles.linkText}>Don't have an account? Sign up!</Text>
       </TouchableOpacity>
 
-      <Modal visible={modalVisible} transparent animationType="slide">
+      <Modal visible={modalVisible} transparent animationType="fade">
         <View style={styles.modalContainer}>
           <View style={styles.modalContent}>
-            <Text style={styles.modalText}>Verificar correo o contraseña</Text>
-            <Button title="Cerrar" onPress={() => setModalVisible(false)} />
+            <Text style={styles.modalText}>Verify email or password</Text>
+            <Button title="Close" onPress={() => setModalVisible(false)} />
           </View>
         </View>
       </Modal>
@@ -170,6 +175,7 @@ const styles = StyleSheet.create({
     color: '#007BFF',
     textAlign: 'center',
     marginVertical: 10,
+    fontSize: 20
   },
   modalContainer: {
     flex: 1,

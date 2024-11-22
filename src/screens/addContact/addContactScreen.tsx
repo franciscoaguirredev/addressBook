@@ -11,13 +11,11 @@ import {
   Modal,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import {Picker} from '@react-native-picker/picker';
 import {useNavigation} from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {colors} from '../../config/theme/theme';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import GoogleMapsScreen from '../googleMaps/googleMapsScreen';
-import uuid from 'react-native-uuid';
 
 export const AddContactScreen = () => {
   const navigation = useNavigation();
@@ -59,7 +57,6 @@ export const AddContactScreen = () => {
 
   const saveContact = async () => {
     try {
-      console.log(photo)
       const token = await AsyncStorage.getItem('token');
       const response = await fetch(
         'https://closetoyoureactnativebackend.onrender.com/api/contacts',
