@@ -14,10 +14,22 @@ import MapView, {Marker} from 'react-native-maps';
 import {getWeather} from '../../config/utils/apiWeather';
 import {colors} from '../../config/theme/theme';
 
+interface IContactData {
+  name: string,
+  email:string,
+  telephone: string;
+  imageUri: string | null
+}
+
 export const ProfileScreen: React.FC<any> = ({route}) => {
   const {contact} = route.params;
   const navigation = useNavigation<any>();
-  const [contactData, setContactData] = useState(contact);
+  const [data, setContactData] = useState<IContactData>({
+    name: '',
+    email: '',
+    telephone: '',
+    imageUri: null
+  });
   const [location, setLocation] = useState<{
     latitude: number;
     longitude: number;
@@ -30,27 +42,34 @@ export const ProfileScreen: React.FC<any> = ({route}) => {
 
   useEffect(() => {
     const loadContactData = async () => {
-      const updatedContact = await AsyncStorage.getItem(
-        `contact_${contact.id}`,
-      );
-      if (updatedContact) {
-        const parsedContact = JSON.parse(updatedContact);
-        setContactData(parsedContact);
-
-        if (parsedContact.location) {
-          const locationData = parsedContact.location;
+      try {
+        const token = await AsyncStorage.getItem('token');
+        const response = await fetch(
+          `https://closetoyoureactnativebackend.onrender.com/api/contacts/${contact.id}`,
+          {
+            method: 'GET',
+            headers: {
+              'Content-type': 'aplication/json',
+              Authorization: `Bearer ${token}`,
+            },
+          },
+        );
+        if (response.ok) {
+          const {data} = await response.json();
+         
+          setContactData(data);
+          const latitude = Number(data.latitude);
+          const longitude = Number(data.longitude);
           setLocation({
-            latitude: locationData.latitude,
-            longitude: locationData.longitude,
+            latitude: latitude,
+            longitude: longitude,
           });
         }
-      }
+      } catch (error) {}
     };
-
     const unsubscribe = navigation.addListener('focus', loadContactData);
-
     return unsubscribe;
-  }, [navigation, contact.telephone]);
+  },[navigation, contact.id]);
 
   useEffect(() => {
     const fetchWeather = async () => {
@@ -96,20 +115,18 @@ export const ProfileScreen: React.FC<any> = ({route}) => {
 
   return (
     <View style={styles.container}>
-      {contactData.photo ? (
-        <Image source={{uri: contactData.photo}} style={styles.photo} />
+      {data.imageUri? (
+        <Image source={{uri: data.imageUri}} style={styles.photo} />
       ) : (
         <Icon
           name="account-circle"
           size={150}
           style={{marginRight: 10}}
-          color={colors.primary}
         />
       )}
-      <Text style={styles.title}>{contactData.name}</Text>
-      <Text style={styles.textInfo}>{contactData.telephone}</Text>
-      <Text style={styles.textInfo}>{contactData.email}</Text>
-      <Text style={styles.textInfo}>{contactData.role}</Text>
+      <Text style={styles.title}>{data.name}</Text>
+      <Text style={styles.textInfo}>{data.telephone}</Text>
+      <Text style={styles.textInfo}>{data.email}</Text>
 
       {weatherData && (
         <View style={styles.weatherContainer}>
@@ -138,8 +155,8 @@ export const ProfileScreen: React.FC<any> = ({route}) => {
             }}>
             <Marker
               coordinate={location}
-              title={contactData.name}
-              description={`Location of ${contactData.name}`}
+              title={data.name}
+              description={`Location of ${data.name}`}
             />
           </MapView>
         </View>
@@ -148,7 +165,7 @@ export const ProfileScreen: React.FC<any> = ({route}) => {
         <TouchableOpacity
           style={styles.iconButton}
           onPress={() =>
-            navigation.navigate('EditContactScreen', {contact: contactData})
+            navigation.navigate('EditContactScreen', {contact: data})
           }>
           <Icon name="edit" size={24} color={colors.iconColor} />
           <Text style={styles.text}>Edit</Text>
@@ -195,21 +212,21 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   text: {
-    color:colors.text,
+    color: colors.text,
   },
   textInfo: {
-    color:colors.text,
-    fontSize:22
+    color: colors.text,
+    fontSize: 22,
   },
   weatherContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginHorizontal:20,
+    marginHorizontal: 20,
     marginTop: 30,
-    marginBottom: 10, 
-    paddingRight:20,
+    marginBottom: 10,
+    paddingRight: 20,
     backgroundColor: '#0087FF',
-    borderRadius: 10
+    borderRadius: 10,
   },
   weatherIcon: {
     width: 50,

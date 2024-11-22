@@ -8,7 +8,6 @@ interface Props {
   name: string;
   telephone: string;
   email: string;
-  role: string;
   image?: string;
   isFirst?: boolean;
   isLast?: boolean;
@@ -20,13 +19,12 @@ export const ContactItem = ({
   name,
   telephone,
   email,
-  role,
   image,
   isFirst = false,
   isLast = false,
 }: Props) => {
   const navigation = useNavigation<any>();
-  const contact = {id,name, telephone, email, role, image};
+  const contact = {id,name, telephone, email, image};
 
   return (
     <Pressable

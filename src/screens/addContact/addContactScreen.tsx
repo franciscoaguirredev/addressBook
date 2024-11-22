@@ -33,7 +33,7 @@ export const AddContactScreen = () => {
     latitude: 6.249468,
     longitude: -75.567938,
   });
-  const [photo, setPhoto] = useState<string | null>(null);
+  const [photo, setPhoto] = useState<string | undefined>(undefined);
   const [isModalVisible, setIsModalVisible] = useState(false);
 
   const openModal = () => setIsModalVisible(true);
@@ -42,7 +42,7 @@ export const AddContactScreen = () => {
   const handleOpenCamera = () => {
     launchCamera({mediaType: 'photo'}, response => {
       if (response.assets && response.assets.length > 0) {
-        setPhoto(response.assets[0].uri || null);
+        setPhoto(response.assets[0].uri);
       }
     });
     closeModal();
@@ -51,7 +51,7 @@ export const AddContactScreen = () => {
   const handleOpenGallery = () => {
     launchImageLibrary({mediaType: 'photo'}, response => {
       if (response.assets && response.assets.length > 0) {
-        setPhoto(response.assets[0].uri || null);
+        setPhoto(response.assets[0].uri);
       }
     });
     closeModal();
@@ -59,19 +59,29 @@ export const AddContactScreen = () => {
 
   const saveContact = async () => {
     try {
-      const id = uuid.v4();
-      const contact = {
-        contactId: id,
-        name,
-        telephone,
-        email,
-        role,
-        location: location,
-        photo,
-      };
-      await AsyncStorage.setItem(`contact_${id}`, JSON.stringify(contact));
+      console.log(photo)
+      const token = await AsyncStorage.getItem('token');
+      const response = await fetch(
+        'https://closetoyoureactnativebackend.onrender.com/api/contacts',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            name: name,
+            phone: telephone,
+            email: email,
+            imageUri: photo,
+            latitude: location.latitude,
+            longitude: location.longitude,
+          }),
+        },
+      );
+      if (response.ok) {
       Alert.alert('Saved contact', 'The contact has been successfully saved.');
-      navigation.goBack();
+      navigation.goBack();}
     } catch (error) {
       Alert.alert('Error', 'There was a problem saving the contact.');
       console.error(error);
@@ -180,21 +190,7 @@ export const AddContactScreen = () => {
           />
         </View>
 
-        <View style={styles.inputContainer}>
-          <Icon
-            name="work"
-            size={20}
-            color={colors.iconColor}
-            style={styles.icon}
-          />
-          <Picker
-            selectedValue={role}
-            onValueChange={itemValue => setRole(itemValue)}
-            style={styles.picker}>
-            <Picker.Item label="Client" value="Client" />
-            <Picker.Item label="Employee" value="Employee" />
-          </Picker>
-        </View>
+
 
         <GoogleMapsScreen onLocationSelected={handleLocationSelected} />
 

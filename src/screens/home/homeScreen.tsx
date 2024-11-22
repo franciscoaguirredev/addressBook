@@ -21,7 +21,6 @@ interface IContact {
   name: string;
   email: string;
   telephone: string;
-  role: string;
   image: string;
 }
 
@@ -30,33 +29,6 @@ export const HomeScreen = () => {
   const [filteredContacts, setFilteredContacts] = useState<IContact[]>([]);
   const [searchText, setSearchText] = useState('');
   const navigation = useNavigation<any>();
-
-  // const fetchContacts = async () => {
-  //   try {
-  //     setSearchText('');
-  //     const keys = await AsyncStorage.getAllKeys();
-  //     const contactKeys = keys.filter(key => key.startsWith('contact_'));
-  //     const storedContacts = await AsyncStorage.multiGet(contactKeys);
-
-  //     const contactList: IContact[] = storedContacts
-  //       .map(([key, value]) => {
-  //         if (value) {
-  //           const parsedContact = JSON.parse(value);
-  //           return {contactId: key.replace('contact_', ''), ...parsedContact};
-  //         }
-  //         return null;
-  //       })
-  //       .filter(Boolean) as IContact[];
-
-  //     setContacts(contactList.sort((a, b) => a.name.localeCompare(b.name)));
-  //     setFilteredContacts(
-  //       contactList.sort((a, b) => a.name.localeCompare(b.name)),
-  //     );
-  //   } catch (error) {
-  //     Alert.alert('Error', 'There was a problem loading the contacts.');
-  //     console.error(error);
-  //   }
-  // };
 
   const fetchContacts = async () => {
     try {
@@ -83,7 +55,6 @@ export const HomeScreen = () => {
         setFilteredContacts(
           contactList.sort((a: any, b: any) => a.name.localeCompare(b.name)),
         );
-        console.log(contactList);
       }
     } catch (error) {
       console.error('Error al obtener contactos:', error);
@@ -171,7 +142,6 @@ export const HomeScreen = () => {
                     name={contact.name}
                     telephone={contact.telephone}
                     email={contact.email}
-                    role={contact.role}
                     image={contact.image}
                     isFirst={index === 0}
                     isLast={index === groupedContacts[letter].length - 1}
