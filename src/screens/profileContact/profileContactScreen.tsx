@@ -15,10 +15,10 @@ import {getWeather} from '../../config/utils/apiWeather';
 import {colors} from '../../config/theme/theme';
 
 interface IContactData {
-  name: string,
-  email:string,
-  telephone: string;
-  imageUri: string | null
+  name: string;
+  email: string;
+  phone: string;
+  imageUri: string | null;
 }
 
 export const ProfileScreen: React.FC<any> = ({route}) => {
@@ -27,8 +27,8 @@ export const ProfileScreen: React.FC<any> = ({route}) => {
   const [data, setContactData] = useState<IContactData>({
     name: '',
     email: '',
-    telephone: '',
-    imageUri: null
+    phone: '',
+    imageUri: null,
   });
   const [location, setLocation] = useState<{
     latitude: number;
@@ -56,7 +56,7 @@ export const ProfileScreen: React.FC<any> = ({route}) => {
         );
         if (response.ok) {
           const {data} = await response.json();
-         
+
           setContactData(data);
           const latitude = Number(data.latitude);
           const longitude = Number(data.longitude);
@@ -69,7 +69,7 @@ export const ProfileScreen: React.FC<any> = ({route}) => {
     };
     const unsubscribe = navigation.addListener('focus', loadContactData);
     return unsubscribe;
-  },[navigation, contact.id]);
+  }, [navigation, contact.id]);
 
   useEffect(() => {
     const fetchWeather = async () => {
@@ -102,30 +102,36 @@ export const ProfileScreen: React.FC<any> = ({route}) => {
 
   const handleDelete = async () => {
     try {
-      await AsyncStorage.removeItem(`contact_${contact.id}`);
-      Alert.alert(
-        'Contact deleted',
-        'The contact has been successfully deleted.',
+      const token = await AsyncStorage.getItem('token');
+      const response = await fetch(
+        `https://closetoyoureactnativebackend.onrender.com/api/contacts/${contact.id}`,
+        {
+          method: 'DELETE',
+          headers: {
+            'Content-type': 'aplication/json',
+            Authorization: `Bearer ${token}`,
+          },
+        },
       );
-      navigation.goBack();
-    } catch (error) {
-      Alert.alert('Error', 'The contact could not be deleted.');
-    }
+      if (response.ok) {
+        Alert.alert(
+          'Contact deleted',
+          'The contact has been successfully deleted.',
+        );
+        navigation.navigate('HomeScreen');
+      }
+    } catch (error) {}
   };
 
   return (
     <View style={styles.container}>
-      {data.imageUri? (
+      {data.imageUri ? (
         <Image source={{uri: data.imageUri}} style={styles.photo} />
       ) : (
-        <Icon
-          name="account-circle"
-          size={150}
-          style={{marginRight: 10}}
-        />
+        <Icon name="account-circle" size={150} style={{marginRight: 10}} />
       )}
       <Text style={styles.title}>{data.name}</Text>
-      <Text style={styles.textInfo}>{data.telephone}</Text>
+      <Text style={styles.textInfo}>{data.phone}</Text>
       <Text style={styles.textInfo}>{data.email}</Text>
 
       {weatherData && (
