@@ -19,13 +19,21 @@ import GoogleMapsScreen from '../googleMaps/googleMapsScreen';
 
 export const EditScreen: React.FC<any> = ({route}) => {
   const {contact} = route.params;
+  const latitudeNum = Number(contact.latitude)
+  const longitudeNum = Number(contact.longitude)
   const navigation = useNavigation();
   const [name, setName] = useState(contact.name || '');
-  const [telephone, setTelephone] = useState(contact.telephone || '');
+  const [telephone, setTelephone] = useState(contact.phone || '');
   const [email, setEmail] = useState(contact.email || '');
-  const [role, setRole] = useState(contact.role || 'Cliente');
-  const [location, setLocation] = useState(contact.location || '');
-  const [photo, setPhoto] = useState<string | null>(contact.photo || null);
+
+  const [location, setLocation] = useState<{
+    latitude: number
+    longitude: number;
+  }>({
+    latitude: latitudeNum,
+    longitude: longitudeNum
+  });
+  const [photo, setPhoto] = useState<string | null>(contact.imageUri || null);
   const [isModalVisible, setIsModalVisible] = useState(false);
 
   const handleOpenCamera = () => {
@@ -55,22 +63,31 @@ export const EditScreen: React.FC<any> = ({route}) => {
 
   const saveContact = async () => {
     try {
-      const updatedContact = {
-        contactId: contact.contactId,
-        name,
-        telephone,
-        email,
-        role,
-        location,
-        photo,
-      };
-      const contactId = `contact_${contact.contactId}`;
-      await AsyncStorage.setItem(contactId, JSON.stringify(updatedContact));
-
-      Alert.alert(
-        'Saved contact',
-        'The contact has been successfully updated.',
+      const token = await AsyncStorage.getItem('token');
+      const response = await fetch(
+        `https://closetoyoureactnativebackend.onrender.com/api/contacts/${contact.id}`,
+        {  
+        method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            name: name,
+            phone: telephone,
+            email: email,
+            imageUri: photo,
+            latitude: location.latitude,
+            longitude: location.longitude,
+          }),
+        },
       );
+      if(response.ok){
+        Alert.alert(
+          'Saved contact',
+          'The contact has been successfully updated.',
+        );
+      }
       navigation.goBack();
     } catch (error) {
       Alert.alert('Error', 'There was a problem saving the contact.');
@@ -188,26 +205,10 @@ export const EditScreen: React.FC<any> = ({route}) => {
           />
         </View>
 
-        <View style={styles.inputContainer}>
-          <Icon
-            name="work"
-            size={20}
-            color={colors.iconColor}
-            style={styles.icon}
-          />
-          <Picker
-            selectedValue={role}
-            onValueChange={itemValue => setRole(itemValue)}
-            style={styles.picker}>
-            <Picker.Item label="Client" value="Client" />
-            <Picker.Item label="Employee" value="Employee" />
-          </Picker>
-        </View>
-
         <View style={styles.mapContainer}>
           <GoogleMapsScreen
             onLocationSelected={handleLocationSelect}
-            initialLocation={location ? location : null}
+            initialLocation={location}
             mapHeight={300}
           />
         </View>
