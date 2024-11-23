@@ -11,6 +11,7 @@ const Stack = createStackNavigator();
 export const Navigator = () => {
   return (
     <Stack.Navigator
+    
       initialRouteName="LoginScreen" // Define LoginScreen como la pantalla inicial
       screenOptions={{headerShown: false}}>
       <Stack.Screen name="LoginScreen" component={LoginScreen} />

@@ -13,6 +13,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import MapView, {Marker} from 'react-native-maps';
 import {getWeather} from '../../config/utils/apiWeather';
 import {colors} from '../../config/theme/theme';
+import {Title} from '../../presentation/components/ui/Title';
 
 interface IContactData {
   name: string;
@@ -135,17 +136,20 @@ export const ProfileScreen: React.FC<any> = ({route}) => {
       <Text style={styles.textInfo}>{data.email}</Text>
 
       {weatherData && (
-        <View style={styles.weatherContainer}>
-          <Image
-            source={{uri: weatherData.iconURL}}
-            style={styles.weatherIcon}
-          />
-          <Text style={styles.weatherText}>
-            {weatherData.temperature.toFixed(1)}°C
-          </Text>
-          <Text style={styles.weatherDescription}>
-            {weatherData.weatherDescription}
-          </Text>
+        <View style= {styles.viewWeather}>
+          <Text style= {styles.textWeather}>Weather</Text>
+          <View style={styles.weatherContainer}>
+            <Image
+              source={{uri: weatherData.iconURL}}
+              style={styles.weatherIcon}
+            />
+            <Text style={styles.weatherText}>
+              {weatherData.temperature.toFixed(1)}°C
+            </Text>
+            <Text style={styles.weatherDescription}>
+              {weatherData.weatherDescription}
+            </Text>
+          </View>
         </View>
       )}
 
@@ -224,15 +228,23 @@ const styles = StyleSheet.create({
     color: colors.text,
     fontSize: 22,
   },
+  viewWeather:{
+    marginTop: 30,
+    alignItems: 'center',
+  },
   weatherContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     marginHorizontal: 20,
-    marginTop: 30,
     marginBottom: 10,
     paddingRight: 20,
     backgroundColor: '#0087FF',
     borderRadius: 10,
+  },
+  textWeather:{
+    fontSize:20,
+    marginBottom:10,
+    color:colors.text
   },
   weatherIcon: {
     width: 50,

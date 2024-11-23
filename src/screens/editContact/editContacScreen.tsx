@@ -11,11 +11,11 @@ import {ScrollView, TextInput} from 'react-native-gesture-handler';
 import {colors} from '../../config/theme/theme';
 import React, {useState} from 'react';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import {Picker} from '@react-native-picker/picker';
 import {useNavigation} from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import GoogleMapsScreen from '../googleMaps/googleMapsScreen';
+import { Title } from '../../presentation/components/ui/Title';
 
 export const EditScreen: React.FC<any> = ({route}) => {
   const {contact} = route.params;
@@ -97,6 +97,7 @@ export const EditScreen: React.FC<any> = ({route}) => {
 
   return (
     <View style={styles.container}>
+      <Title text="Edit contact" safe></Title>
       <ScrollView>
         <Modal
           transparent={true}
@@ -240,7 +241,8 @@ const styles = StyleSheet.create({
   photoContainer: {
     backgroundColor: colors.cardBackground,
     alignItems: 'center',
-    marginBottom: 15,
+    marginTop: 15,
+    marginBottom: 20,
     borderRadius: 100,
     width: 150,
     height: 150,

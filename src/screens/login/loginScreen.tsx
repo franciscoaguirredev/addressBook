@@ -12,7 +12,7 @@ import {
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useFocusEffect, useNavigation} from '@react-navigation/native';
-import {colors} from '../../config/theme/theme';
+import {colors, globalStyles} from '../../config/theme/theme';
 
 const LoginScreen = () => {
   const navigation = useNavigation<any>();
@@ -106,14 +106,17 @@ const LoginScreen = () => {
             </TouchableOpacity>
           </View>
 
+          <View style = {styles.viewBotton}>
           <TouchableOpacity
             style={styles.button}
             onPress={() => handleLogin(email, password)}>
             <Text style={styles.buttonText}>Log in</Text>
           </TouchableOpacity>
+          </View>
 
           <TouchableOpacity onPress={() => navigation.navigate('RegisterScreen')}>
-            <Text style={styles.linkText}>Don't have an account? Sign up!</Text>
+            <Text style={styles.linkText}>Don't have an account?</Text>
+            <Text style={styles.linkTextSignIn}>Sign up!</Text>
           </TouchableOpacity>
         </>
       )}
@@ -135,13 +138,14 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 20,
     justifyContent: 'center',
-    backgroundColor: 'gray',
+    backgroundColor: colors.primary,
   },
   welcomeText: {
-    fontSize: 24,
+    fontSize: 26,
     fontWeight: 'bold',
     textAlign: 'center',
     marginBottom: 20,
+    color: colors.iconColor
   },
   input: {
     borderWidth: 1,
@@ -150,6 +154,7 @@ const styles = StyleSheet.create({
     padding: 10,
     marginBottom: 15,
     backgroundColor: 'black',
+    fontSize: 18
   },
   passwordContainer: {
     flexDirection: 'row',
@@ -163,13 +168,19 @@ const styles = StyleSheet.create({
   passwordInput: {
     flex: 1,
     padding: 10,
+    fontSize: 18
   },
   showPasswordText: {
     color: '#007BFF',
     fontWeight: 'bold',
     marginRight: 10,
   },
+  viewBotton:{
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
   button: {
+    width: '30%',
     backgroundColor: '#007BFF',
     padding: 15,
     borderRadius: 5,
@@ -177,29 +188,36 @@ const styles = StyleSheet.create({
     marginBottom: 15,
   },
   buttonText: {
-    color: '#fff',
-    fontWeight: 'bold',
+    color:colors.iconColor,
+    fontSize: 20,
   },
   linkText: {
+    color: colors.text,
+    textAlign: 'center',
+    marginTop: 20,
+    fontSize: 16,
+  },
+  linkTextSignIn: {
     color: '#007BFF',
     textAlign: 'center',
-    marginVertical: 10,
     fontSize: 20,
   },
   modalContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    backgroundColor: 'rgba(0, 0, 0, 0.7)',
   },
   modalContent: {
     backgroundColor: '#000',
     padding: 20,
     borderRadius: 10,
     alignItems: 'center',
+    borderWidth: 1,
+    borderColor: '#ccc',
   },
   modalText: {
-    fontSize: 18,
+    fontSize: 20,
     marginBottom: 20,
     textAlign: 'center',
   },

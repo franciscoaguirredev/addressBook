@@ -16,13 +16,14 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {colors} from '../../config/theme/theme';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import GoogleMapsScreen from '../googleMaps/googleMapsScreen';
+import {Title} from '../../presentation/components/ui/Title';
 
 export const AddContactScreen = () => {
   const navigation = useNavigation();
   const [name, setName] = useState('');
   const [telephone, setTelephone] = useState('');
   const [email, setEmail] = useState('');
-  const [role, setRole] = useState('Cliente');
+  const [isLoading, setIsLoading] = useState(false);
 
   const [location, setLocation] = useState<{
     latitude: number;
@@ -77,8 +78,12 @@ export const AddContactScreen = () => {
         },
       );
       if (response.ok) {
-      Alert.alert('Saved contact', 'The contact has been successfully saved.');
-      navigation.goBack();}
+        Alert.alert(
+          'Saved contact',
+          'The contact has been successfully saved.',
+        );
+        navigation.goBack();
+      }
     } catch (error) {
       Alert.alert('Error', 'There was a problem saving the contact.');
       console.error(error);
@@ -94,6 +99,7 @@ export const AddContactScreen = () => {
 
   return (
     <View style={styles.container}>
+      <Title text="Add Contact" safe />
       <ScrollView>
         <Modal
           visible={isModalVisible}
@@ -105,13 +111,23 @@ export const AddContactScreen = () => {
               <TouchableOpacity
                 style={styles.modalOption}
                 onPress={handleOpenCamera}>
-                <Icon name="photo-camera" size={24} color={colors.primary} style={styles.modalIcon}/>
+                <Icon
+                  name="photo-camera"
+                  size={24}
+                  color={colors.primary}
+                  style={styles.modalIcon}
+                />
                 <Text style={styles.modalOptionText}>Camera</Text>
               </TouchableOpacity>
               <TouchableOpacity
                 style={styles.modalOption}
                 onPress={handleOpenGallery}>
-                <Icon name="photo-library" size={24} color={colors.primary}style={styles.modalIcon}/>
+                <Icon
+                  name="photo-library"
+                  size={24}
+                  color={colors.primary}
+                  style={styles.modalIcon}
+                />
                 <Text style={styles.modalOptionText}>Gallery</Text>
               </TouchableOpacity>
               <TouchableOpacity style={styles.modalCancel} onPress={closeModal}>
@@ -120,7 +136,12 @@ export const AddContactScreen = () => {
               <TouchableOpacity
                 onPress={() => setIsModalVisible(false)}
                 style={styles.modalOption}>
-                <Icon name="close" size={24} color={colors.primary} style={styles.modalIcon}/>
+                <Icon
+                  name="close"
+                  size={24}
+                  color={colors.primary}
+                  style={styles.modalIcon}
+                />
                 <Text style={styles.modalOptionText}>Cancel</Text>
               </TouchableOpacity>
             </View>
@@ -187,8 +208,6 @@ export const AddContactScreen = () => {
           />
         </View>
 
-
-
         <GoogleMapsScreen onLocationSelected={handleLocationSelected} />
 
         <View style={styles.actionsContainer}>
@@ -218,6 +237,7 @@ const styles = StyleSheet.create({
   photoContainer: {
     backgroundColor: colors.cardBackground,
     alignItems: 'center',
+    marginTop: 15,
     marginBottom: 15,
     borderRadius: 100,
     width: 150,

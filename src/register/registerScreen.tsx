@@ -11,6 +11,7 @@ import {
   Image,
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
+import { colors } from '../config/theme/theme';
 
 const RegisterScreen = () => {
   const [name, setName] = useState('');
@@ -51,7 +52,7 @@ const RegisterScreen = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Registro</Text>
+      <Text style={styles.title}>Register</Text>
 
       <TextInput
         style={styles.input}
@@ -69,9 +70,11 @@ const RegisterScreen = () => {
         secureTextEntry
       />
 
-      <TouchableOpacity style={styles.registerButton} onPress={handleRegister}>
-        <Text style={styles.buttonText}>Registrarse</Text>
+      <View style = {styles.viewBotton}>
+      <TouchableOpacity style={styles.button} onPress={handleRegister}>
+        <Text style={styles.buttonText}>Sign up</Text>
       </TouchableOpacity>
+      </View>
 
       <Modal visible={modalVisible} transparent animationType="slide">
         <View style={styles.modalContainer}>
@@ -89,38 +92,20 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    backgroundColor: '#f5f5f5',
+    justifyContent: 'center',
+    backgroundColor: colors.primary,
   },
   title: {
     fontSize: 24,
     fontWeight: 'bold',
     textAlign: 'center',
     marginBottom: 20,
-  },
-  imageContainer: {
-    alignItems: 'center',
-    marginBottom: 20,
-  },
-  image: {
-    width: 100,
-    height: 100,
-    borderRadius: 50,
-    marginBottom: 10,
+    color: colors.iconColor
   },
   placeholderText: {
     fontSize: 16,
     color: '#888',
     marginBottom: 10,
-  },
-  imageButtons: {
-    flexDirection: 'row',
-    gap: 10,
-  },
-  imageButton: {
-    backgroundColor: '#007BFF',
-    padding: 10,
-    borderRadius: 5,
-    marginHorizontal: 5,
   },
   input: {
     borderWidth: 1,
@@ -129,6 +114,7 @@ const styles = StyleSheet.create({
     padding: 10,
     marginBottom: 15,
     backgroundColor: 'black',
+    fontSize: 18
   },
   registerButton: {
     backgroundColor: '#28a745',
@@ -137,8 +123,21 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   buttonText: {
-    color: '#fff',
+    color:colors.iconColor,
     fontWeight: 'bold',
+    fontSize: 20,
+  },
+  viewBotton:{
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  button: {
+    width: '30%',
+    backgroundColor: '#007BFF',
+    padding: 15,
+    borderRadius: 5,
+    alignItems: 'center',
+    marginBottom: 15,
   },
   modalContainer: {
     flex: 1,
