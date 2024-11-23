@@ -1,81 +1,110 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+# Close To Yoy - X-Ray
 
-# Getting Started
+**Close To Yoy - X-Ray** es una aplicación móvil que permite guardar información de contacto, incluyendo imagen, nombre, teléfono, ubicación y clima asociado a la ubicación. Utiliza APIs de Google Maps para obtener la ubicación y OpenWeather para mostrar el clima en tiempo real según la ubicación del contacto.
 
->**Note**: Make sure you have completed the [React Native - Environment Setup](https://reactnative.dev/docs/environment-setup) instructions till "Creating a new application" step, before proceeding.
+## Tecnologías Usadas
 
-## Step 1: Start the Metro Server
+- **CSS** y **TypeScript** para el estilo y tipado en la aplicación.
+- **JWT** para la autenticación.
+- **React Native** para el desarrollo de la aplicación móvil.
+- **NestJS** para el backend de la API.
+- **MySQL** para almacenar los datos de los contactos en la base de datos.
+- **Google Maps API** para obtener la ubicación del contacto.
+- **OpenWeather API** para mostrar el clima según la ubicación guardada.
+- **OnRender** para el despliegue del servidor en la nube.
 
-First, you will need to start **Metro**, the JavaScript _bundler_ that ships _with_ React Native.
+## Requisitos Previos
 
-To start Metro, run the following command from the _root_ of your React Native project:
+Antes de empezar, asegúrate de tener instalados los siguientes componentes en tu entorno de desarrollo:
+
+- **Node.js** (recomendado v14+)
+- **Yarn** (opcional, pero recomendado para manejar dependencias)
+- **Android Studio** para ejecutar la aplicación en un emulador Android.
+- **react-native-vector-icons** para los iconos de la interfaz.
+- **JWT** para el manejo de la autenticación.
+
+## Instalación y Configuración
+
+### Pasos para la instalación:
+
+1. Clona el repositorio:
+   ```bash
+      git clone https://github.com/miusuario/close-to-yoy-xray.git
+      # Navega al directorio de la aplicación:
+   ```
 
 ```bash
-# using npm
-npm start
+# Copiar código
+cd close-to-yoy-xray
 
-# OR using Yarn
-yarn start
+# Instala las dependencias:
+
+
+# Copiar código
+$ npm install
+
+# o si usas Yarn:
+$ yarn install
 ```
+## Configuración adicional:
 
-## Step 2: Start your Application
-
-Let Metro Bundler run in its _own_ terminal. Open a _new_ terminal from the _root_ of your React Native project. Run the following command to start your _Android_ or _iOS_ app:
-
-### For Android
+# API Keys:
+Necesitarás obtener claves API para Google Maps y OpenWeather.
+Coloca estas claves en los archivos de configuración adecuados.
+Para ejecutar la aplicación en un dispositivo Android o en un emulador:
 
 ```bash
-# using npm
-npm run android
-
-# OR using Yarn
-yarn android
+# Copiar código
+$ npx react-native run-android
 ```
+## Uso de la Aplicación
+Pantalla de Login:
 
-### For iOS
+La aplicación solicita un correo y contraseña para iniciar sesión.
+Si no estás registrado, puedes hacerlo haciendo clic en el botón Sign In y completando el formulario con tu correo y contraseña.
+Después de registrarte, serás redirigido nuevamente a la pantalla de login.
+Pantalla Principal (Home):
 
-```bash
-# using npm
-npm run ios
+Una vez iniciada la sesión, serás dirigido a la pantalla principal, donde podrás agregar nuevos contactos.
+Para agregar un contacto, ingresa la imagen desde la cámara o galería, el nombre, teléfono, email y selecciona la ubicación en el mapa de Google Maps.
+Haz clic en el ícono de Save para guardar el contacto.
+Los contactos se organizan alfabéticamente y se muestran en la pantalla principal.
+Detalles del Contacto:
 
-# OR using Yarn
-yarn ios
-```
+Al hacer clic en un contacto, podrás ver la información guardada junto con el clima en tiempo real, gracias a la integración con OpenWeather.
+En esta pantalla, hay dos iconos disponibles:
+Editar: Permite cambiar la información, foto o ubicación del contacto.
+Eliminar: Permite eliminar el contacto.
+Cierre de Sesión:
 
-If everything is set up _correctly_, you should see your new app running in your _Android Emulator_ or _iOS Simulator_ shortly provided you have set up your emulator/simulator correctly.
+Si cierras la aplicación, deberás ingresar nuevamente el correo y la contraseña que usaste para registrarte.
 
-This is one way to run your app — you can also run it directly from within Android Studio and Xcode respectively.
 
-## Step 3: Modifying your App
+## Características
+Guardar información de contactos: Incluye foto, nombre, teléfono, email y ubicación.
+Clima según ubicación: Utiliza la API de OpenWeather para obtener el clima actual basado en las coordenadas guardadas en Google Maps.
+Almacenamiento en la nube: Los contactos están almacenados en un servidor en la nube, desplegado en OnRender, lo que permite acceder a los datos desde cualquier dispositivo Android, sin importar el dispositivo usado previamente.
+Sincronización: Al iniciar sesión en cualquier dispositivo, los contactos guardados previamente se cargarán automáticamente.
 
-Now that you have successfully run the app, let's modify it.
+## API
+Backend en OnRender:
 
-1. Open `App.tsx` in your text editor of choice and edit some lines.
-2. For **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Developer Menu** (<kbd>Ctrl</kbd> + <kbd>M</kbd> (on Window and Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (on macOS)) to see your changes!
+Utiliza un servidor desplegado en OnRender que almacena la base de datos de usuarios y contactos.
+Proporciona endpoints para la autenticación de usuarios y el manejo de contactos.
+Google Maps API:
 
-   For **iOS**: Hit <kbd>Cmd ⌘</kbd> + <kbd>R</kbd> in your iOS Simulator to reload the app and see your changes!
+Utiliza Google Maps para seleccionar la ubicación del contacto y obtener las coordenadas para pasar a la siguiente API.
+OpenWeather API:
 
-## Congratulations! :tada:
+Usa las coordenadas obtenidas de Google Maps para obtener el clima en tiempo real mediante la API de OpenWeather.
 
-You've successfully run and modified your React Native App. :partying_face:
+# Licencias
+Google Maps API y OpenWeather API:
+Ambas APIs se usan con claves gratuitas, pero con ciertas limitaciones. Google Maps es una clave de prueba y OpenWeather es gratuita.
 
-### Now what?
+# Contribución
+No hay contribución formal en este proyecto. Aunque no se aplican todas las mejores prácticas de desarrollo, la aplicación funciona bien y su estructura y código pueden ser mejorados.
 
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [Introduction to React Native](https://reactnative.dev/docs/getting-started).
-
-# Troubleshooting
-
-If you can't get this to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
-
-# Learn More
-
-To learn more about React Native, take a look at the following resources:
-
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
-
-# Necesitamos una aplicación móvil que nos permita gestionar los contactos de nuestros empleados y clientes de manera rápida y sencilla. La idea es que los usuarios puedan agregar nuevos contactos con su información básica, como nombre, teléfono y correo electrónico, además de poder adjuntar una foto del contacto utilizando la cámara del teléfono o seleccionando una imagen de la galería. También sería ideal que pudieran editar y eliminar contactos cuando sea necesario. La aplicación debería funcionar tanto en Android como en iOS, y ser fácil de usar para todos los empleados, sin necesidad de conocimientos técnicos avanzados.
+# Contacto
+Si tienes más dudas sobre este proyecto, puedes escribirme a:
+franco.hopper.riwi@gmail.com
